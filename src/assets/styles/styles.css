@@ -38,7 +38,7 @@
     content: '';
     width: 100vw;
     height: 20vh;
-    background-color: rgba(163, 200, 251,0.45);
+    background-color: rgba(163, 200, 251, 0.200);
     -webkit-filter: blur(4px);
             filter: blur(4px);
     display: block;
