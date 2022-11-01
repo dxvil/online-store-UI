@@ -40,14 +40,20 @@
     align-items: center;
     position: relative;
     z-index: 1;
-    text-shadow: #e0e0e0 1px 1px 0;
+    color: #ff9900;
+    text-shadow: #2200ff 1px 1px 0;
+}
+
+.intro h4 { 
+    color: #9966FF; 
+    text-shadow: #000033 1px 1px ;
 }
 
 .intro *::before {
     content: '';
     width: 100vw;
     height: 20vh;
-    background-color: rgba(163, 200, 251, 0.200);
+    background-color: rgba(216, 216, 216, 0.347);
     -webkit-filter: blur(4px);
             filter: blur(4px);
     display: block;
