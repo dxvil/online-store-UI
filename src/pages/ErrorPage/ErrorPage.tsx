@@ -1,7 +1,7 @@
 import { Alert, AlertTitle, Stack } from "@mui/material";
 import React from "react";
 import { AppMenu } from "../../components/Menu/AppMenu";
-import NotFound from "../../assets/images/404.png";
+import notfound from "../../assets/images/404.png";
 export const ErrorPage = () => {
 	return (
 		<Stack 
@@ -21,7 +21,7 @@ export const ErrorPage = () => {
 				</AlertTitle>
                 This page do not exist
 			</Alert>
-			<img src={NotFound} alt="404 Not Found image"
+			<img src={notfound} alt="404 Not Found image"
 				style={{width: "33%"}}
 			/>
 		</Stack>
