@@ -1,5 +1,6 @@
 .header {
     position: relative;
+    height: 540px;
 }
 
 .app-menu-list {
@@ -12,11 +13,17 @@
     align-items: center;
     margin: 0;
     padding: 0.5em 0;
-    background-color: #fff;
+    background-color: transparent;
+    cursor: pointer;
     border-radius: 0;
     left: 50%;
     right: 50%;
     transform: translate(-50%, 0);
+}
+
+.app-menu-list:hover {
+    background-color: #fff;
+    color: #000;
 }
 
 .app-menu-list-item {
@@ -33,6 +40,7 @@
     background-image: url('../images/intro1.png');
     background-repeat: no-repeat;
     background-size: cover;
+    background-position-x: 50%;
     text-align: center;
     display: flex;
     flex-direction: column;
