@@ -55,3 +55,8 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+a{text-decoration: none;}
+
+body {
+	background: #9b9b9b7a;
+}

@@ -9,7 +9,7 @@ class HttpClient implements IHttpClient {
 		this.headers = options.headers || {};
 	}
 
-	async fetch(endpoint: string, options = {}): Promise<string | object | undefined | null> {
+	async _fetch(endpoint: string, options = {}): Promise<string | object | undefined | null> {
 		const res = await fetch(this.baseUrl + endpoint, {
 			...options,
 			headers: this.headers
@@ -34,14 +34,14 @@ class HttpClient implements IHttpClient {
 	}
 
 	get(endpoint: string, options: object = {}) {
-		return this.fetch(endpoint, {
+		return this._fetch(endpoint, {
 			...options,
 			method: "GET"
 		});
 	}
     
 	post(endpoint: string, body: object, options: object = {}) {
-		return this.fetch(endpoint, {
+		return this._fetch(endpoint, {
 			...options,
 			body: body ? JSON.stringify(body) : undefined,
 			method: "POST"
@@ -49,7 +49,7 @@ class HttpClient implements IHttpClient {
 	}
     
 	put(endpoint: string, body: object, options: object = {}) {
-		return this.fetch(endpoint, {
+		return this._fetch(endpoint, {
 			...options,
 			body: body ? JSON.stringify(body) : undefined,
 			method: "PUT"
@@ -57,7 +57,7 @@ class HttpClient implements IHttpClient {
 	}
     
 	patch(endpoint: string, operations: object, options: object = {}) {
-		return this.fetch(endpoint, {
+		return this._fetch(endpoint, {
 			parseResponse: false,
 			...options,
 			body: JSON.stringify(operations),
@@ -66,7 +66,7 @@ class HttpClient implements IHttpClient {
 	}
     
 	delete(endpoint: string, options: object = {}) {
-		return this.fetch(endpoint, {
+		return this._fetch(endpoint, {
 			parseResponse: false,
 			...options,
 			method: "DELETE"
@@ -83,8 +83,8 @@ class ApiClient extends HttpClient {
 	}
 	get products() {
 		return {
-			getAll: () => this.get("api/v1/products"),
-			get: (id: number) => this.get(`api/v1/products/${id}`),
+			getAll: () => this.get("/api/v1/products"),
+			get: (id: number) => this.get(`/api/v1/products/${id}`),
 			delete: (id: number) => this.delete(`/api/v1/products/${id}`),
 			create: (product: IProduct) => this.post("/api/v1/products/", product),
 			update: (product: IProduct, id: number) => this.put(`/api/v1/products/${id}`, product)
@@ -98,4 +98,4 @@ class ApiClient extends HttpClient {
 	}
 }
 
-export {};
+export const api = new ApiClient("https://api.escuelajs.co");

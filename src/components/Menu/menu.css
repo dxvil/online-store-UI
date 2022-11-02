@@ -1,0 +1,39 @@
+.app-menu-list {
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0.5em 0;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 0;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, 0);
+    transition: 0.5s ease all;
+}
+
+.app-menu-list:hover {
+    background-color: #fff;
+}
+
+.app-menu-list-item {
+    margin: 0 5em;
+}
+.app-menu-list:hover.app-menu-list a {
+    color: #000;
+}
+.app-menu-list:hover.app-menu-list svg{
+    color: #000;
+}
+.app-menu-list-item a:hover {
+    text-decoration: underline;
+}
+
+.app-menu-list a, .app-menu-list svg {
+    color: #fff;
+}

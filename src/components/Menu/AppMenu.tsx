@@ -2,6 +2,7 @@ import React from "react";
 import { IconButton , Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { NavLink, useLocation } from "react-router-dom";
+import "./menu.css";
 
 export const AppMenu = () => {
 	const location = useLocation();
@@ -15,12 +16,12 @@ export const AppMenu = () => {
 			</li>
 			}
 			<li className="app-menu-list-item">
-				<NavLink to="products">
+				<NavLink to="/products">
 					<Typography sx={{ minWidth: 100 }}>Products</Typography>
 				</NavLink>
 			</li>
 			<li className="app-menu-list-item">
-				<NavLink to="profile">
+				<NavLink to="/profile">
 					<Typography sx={{ minWidth: 100 }}>Profile</Typography>
 				</NavLink>
 			</li>
