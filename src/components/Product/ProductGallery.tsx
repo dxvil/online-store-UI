@@ -41,29 +41,20 @@ export const ProductGallery = ({product}: {product: IProduct}) => {
 
 	return (
 		<Box className="product-img-box">
-			<Button 
-				size="small"
-				className="product-img-btn"
-				onClick={decreaseCounter}
-				color="primary" aria-label="change picture"
-			>
-				<ArrowUpwardIcon />
-			</Button>
-
-			<Button
-				size="small"
-				className="product-img-btn"
-				onClick={increaseCounter}
-				color="primary" aria-label="change picture"
-			>
-				<ArrowDownwardIcon />
-			</Button>
 			<div className="product-images">
 				<img 
 					className="product-img"
 					src={images[productImage]} 
 					alt="Product image"/>
 				<div className="product-additional-images">
+					<Button 
+						size="small"
+						className="product-img-btn"
+						onClick={decreaseCounter}
+						color="primary" aria-label="change picture"
+					>
+						<ArrowUpwardIcon />
+					</Button>
 					{images.map((image, i) => {
 						if(i !== productImage){
 							return(
@@ -79,6 +70,14 @@ export const ProductGallery = ({product}: {product: IProduct}) => {
 							);
 						}
 					})}
+					<Button
+						size="small"
+						className="product-img-btn"
+						onClick={increaseCounter}
+						color="primary" aria-label="change picture"
+					>
+						<ArrowDownwardIcon />
+					</Button>
 				</div>
 			</div>
 		</Box>				
