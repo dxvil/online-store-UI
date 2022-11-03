@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Stack, Button } from "@mui/material";
+import { useParams } from "react-router-dom";
 import "./product.css";
-import {api} from "../../api/API";
-import {ProductGallery} from "./ProductGallery";
+import { api } from "../../api/API";
+import { ProductGallery } from "./ProductGallery";
+import { Box, Typography, Stack, Button } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { pink } from "@mui/material/colors";
@@ -11,14 +12,16 @@ import { IProduct } from "../../types/interfaces";
 export const Product = () => {
 	const [product, setProduct] = useState<null | IProduct>(null);
 	const [isLiked, setIsLiked] = useState<boolean>(false);
+	const { id } = useParams();
 
 	useEffect(() => {
-		api.products.get(20).then((res: any) => {
-			if(res !== null) {
-				setProduct(res);
-			}
-			
-		});
+		if(id)  {
+			api.products.get(Number(id)).then((res: any) => {
+				if(res !== null) {
+					setProduct(res);
+				}
+			});
+		}	
 	}, []);
 
 	return (
