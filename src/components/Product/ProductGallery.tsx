@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Button, Box } from "@mui/material";
-import {IProduct} from "./Product";
+import { IProduct } from "../../types/interfaces";
 import "./product.css";
 
 export const ProductGallery = ({product}: {product: IProduct}) => {

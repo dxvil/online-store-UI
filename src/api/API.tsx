@@ -1,5 +1,5 @@
-import { IHttpClient, IHeaders, IProduct } from "../types/IAPI";
-
+import { IHttpClient, IHeaders } from "../types/IAPI";
+import { IProduct } from "../types/interfaces";
 
 class HttpClient implements IHttpClient {
 	baseUrl;

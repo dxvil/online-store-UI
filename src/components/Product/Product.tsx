@@ -6,19 +6,8 @@ import {ProductGallery} from "./ProductGallery";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { pink } from "@mui/material/colors";
-interface ICategory {
-	id: number
-	name: string
-	image: string
-}
-export interface IProduct {
-	id: number
-	title: string
-	price: number
-	description: string
-	category: ICategory
-	images: string[]
-}
+import { IProduct } from "../../types/interfaces";
+
 export const Product = () => {
 	const [product, setProduct] = useState<null | IProduct>(null);
 	const [isLiked, setIsLiked] = useState<boolean>(false);
