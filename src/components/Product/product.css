@@ -15,6 +15,16 @@
     width: 50%;
 }
 
+
+.product-buy-btn, .product-like-btn {
+    width: 8em;
+    margin: 2em 1em 2em 2em !important;
+}
+
+.product-like-btn {
+    width: 5em;
+    border: 1px solid #e91e63 !important;
+}
 .product-img {
     position: relative;
     width: 100%;
@@ -80,5 +90,8 @@
         left: 50%;
         right: 50%;
         transform: translate(-50%, 0);
+    }
+    .product-buy-btn, .product-like-btn {
+        text-align: center;
     }
 }

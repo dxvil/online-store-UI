@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Stack } from "@mui/material";
+import { Box, Typography, Stack, Button } from "@mui/material";
 import "./product.css";
 import {api} from "../../api/API";
 import {ProductGallery} from "./ProductGallery";
-
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { pink } from "@mui/material/colors";
 interface ICategory {
 	id: number
 	name: string
@@ -19,7 +21,8 @@ export interface IProduct {
 }
 export const Product = () => {
 	const [product, setProduct] = useState<null | IProduct>(null);
-	
+	const [isLiked, setIsLiked] = useState<boolean>(false);
+
 	useEffect(() => {
 		api.products.get(20).then((res: any) => {
 			if(res !== null) {
@@ -56,6 +59,23 @@ export const Product = () => {
 						gutterBottom>
 						{product && product.description}
 					</Typography>
+					<div className="product-buttons">
+						<Button 
+							size="medium"
+							className="product-buy-btn"
+							variant="contained">
+						Buy
+						</Button>
+						<Button 
+							onClick={() => setIsLiked(!isLiked)}
+							className="product-like-btn"
+							variant="outlined">
+							{isLiked 
+								? <FavoriteIcon sx={{ color: pink[500] }} /> 
+								: <FavoriteBorderIcon sx={{ color: pink[500] }} />
+							}
+						</Button>
+					</div>
 				</Stack>
 			</Stack>
 		</Box>
