@@ -6,7 +6,8 @@ import { ProductGallery } from "./ProductGallery";
 import { Box, Typography, Stack, Button } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import {NoItem} from "../NoItem/NoItem";
+import { NoItem } from "../NoItem/NoItem";
+import { BackButton } from "../BackButton/BackButton";
 import { pink } from "@mui/material/colors";
 import { IProduct } from "../../types/interfaces";
 import { IProductError } from "../../types/IAPI";
@@ -41,14 +42,15 @@ export const Product = () => {
 	return (
 		<Box className="product">
 			<Stack direction="row" spacing={10} flexWrap="wrap">
-				{product && "images" in product && product?.images?.length !== 0 &&
+				{product && "images" in product && product?.images.length !== 0 &&
 						<ProductGallery product={product}/>
 				}
 				<Stack direction="column" className="product-header">
 					<Stack direction="row" 
 						alignItems="center"
-						spacing={10} 
+						spacing={5} 
 						justifyContent="center">
+						<BackButton link="/products" />
 						<Typography 
 							variant="h4" 
 							gutterBottom>

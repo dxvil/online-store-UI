@@ -19,6 +19,7 @@ export const AppPagination = ({amountOfItems, setPageOfItems} : IPagination) => 
 
 	return (
 		<Pagination 
+			sx={{margin: "5em 0 3em 0"}}
 			variant="outlined" 
 			color="primary"
 			count={amountOfItems}

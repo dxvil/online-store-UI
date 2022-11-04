@@ -81,7 +81,7 @@ class ApiClient extends HttpClient {
 	}
 	get products() {
 		return {
-			getAll: () => this.get("/api/v1/products"),
+			getAll: (offset?: string, limit?: string) => this.get(!offset ? "/api/v1/products" : `/api/v1/products?offset=${offset}&limit=${limit}`),
 			get: (id: number) => this.get<IProduct | IProductError>(`/api/v1/products/${id}`),
 			delete: (id: number) => this.delete(`/api/v1/products/${id}`),
 			create: (product: IProduct) => this.post("/api/v1/products/", product),
