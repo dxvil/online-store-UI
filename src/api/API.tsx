@@ -1,4 +1,4 @@
-import { IHttpClient, IHeaders } from "../types/IAPI";
+import { IHttpClient, IHeaders, IProductError } from "../types/IAPI";
 import { IProduct } from "../types/interfaces";
 
 class HttpClient implements IHttpClient {
@@ -9,13 +9,11 @@ class HttpClient implements IHttpClient {
 		this.headers = options.headers || {};
 	}
 
-	async _fetch(endpoint: string, options = {}): Promise<string | object | undefined | null> {
+	async _fetch<T>(endpoint: string, options = {}): Promise<T | undefined> {
 		const res = await fetch(this.baseUrl + endpoint, {
 			...options,
 			headers: this.headers
 		});
-    
-		if (!res.ok) throw new Error(res.statusText);
     
 		if (res.status !== 204) {
 			return res.json();
@@ -33,8 +31,8 @@ class HttpClient implements IHttpClient {
 		return this.headers[key];
 	}
 
-	get(endpoint: string, options: object = {}) {
-		return this._fetch(endpoint, {
+	get<T>(endpoint: string, options: object = {}) {
+		return this._fetch<T>(endpoint, {
 			...options,
 			method: "GET"
 		});
@@ -84,7 +82,7 @@ class ApiClient extends HttpClient {
 	get products() {
 		return {
 			getAll: () => this.get("/api/v1/products"),
-			get: (id: number) => this.get(`/api/v1/products/${id}`),
+			get: (id: number) => this.get<IProduct | IProductError>(`/api/v1/products/${id}`),
 			delete: (id: number) => this.delete(`/api/v1/products/${id}`),
 			create: (product: IProduct) => this.post("/api/v1/products/", product),
 			update: (product: IProduct, id: number) => this.put(`/api/v1/products/${id}`, product)

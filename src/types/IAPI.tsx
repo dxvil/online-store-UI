@@ -6,3 +6,9 @@ export interface IHttpClient {
 export interface IHeaders {
     [key: string]: string
 }
+
+export interface IProductError {
+    error: string
+    message: string
+    statusCode: number
+}

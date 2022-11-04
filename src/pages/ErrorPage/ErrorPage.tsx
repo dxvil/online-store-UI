@@ -2,6 +2,7 @@ import { Alert, AlertTitle, Stack } from "@mui/material";
 import React from "react";
 import { AppMenu } from "../../components/Menu/AppMenu";
 import notfound from "../../assets/images/404.png";
+
 export const ErrorPage = () => {
 	return (
 		<Stack 
