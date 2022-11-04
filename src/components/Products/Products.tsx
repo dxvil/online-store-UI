@@ -7,23 +7,26 @@ import { paginationSlicer } from "../../tools/pagination";
 import { AppPagination } from "../Pagination/Pagination";
 import "./products.css";
 
-export const Products = () => {
-	const maxElements = 9;
+export const Products = ({maxElements, pagination}: {maxElements: number, pagination: boolean}) => {
 	const [products, setProducts] = useState<IProduct[]>([]);
 	const [productsListLength, setProductListLength] = useState<number>(0);
 	const [pageOfItems, setPageOfItems] = useState<number>(0);
 	const amountOfItems =  productsListLength < maxElements ? 1 : Math.floor(productsListLength / maxElements);
 
 	useEffect(() => {
-		api.products.getAll().then((res: any) => {
-			setProductListLength(res.length);
+		api.products.getAll().then((res: IProduct[] | undefined) => {
+			if(res && Array.isArray(res)) {
+				setProductListLength(res.length);
+			}
 		});
 	}, []);
 
 	useEffect(() => {
 		const offset = paginationSlicer(maxElements, pageOfItems);
-		api.products.getAll(offset.toString(), maxElements.toString()).then((res: any) => {
-			setProducts(res);
+		api.products.getAll(offset.toString(), maxElements.toString()).then((res: IProduct[] | undefined) => {
+			if(res) {
+				setProducts(res);
+			}
 		});
 	}, [pageOfItems]);
 	
@@ -34,7 +37,12 @@ export const Products = () => {
 					<ProductItem item={item} key={uuid()} />
 				);
 			})}
-			<AppPagination amountOfItems={amountOfItems} setPageOfItems={setPageOfItems}/>
+			{pagination && 
+					<AppPagination 
+						amountOfItems={amountOfItems} 
+						pageSize={maxElements}
+						setPageOfItems={setPageOfItems}/>
+			}
 		</div>
 	);
 };

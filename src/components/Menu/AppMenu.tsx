@@ -26,7 +26,7 @@ export const AppMenu = () => {
 				</NavLink>
 			</li>
 			<li className="app-menu-list-item">
-				<NavLink to="cart" className="cart-list-item">
+				<NavLink to="/cart" className="cart-list-item">
 					<IconButton>
 						<ShoppingCartIcon />
 					</IconButton>

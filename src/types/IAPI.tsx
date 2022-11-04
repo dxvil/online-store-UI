@@ -12,3 +12,10 @@ export interface IProductError {
     message: string
     statusCode: number
 }
+
+export interface ICategory {
+    id: number
+    name: string
+}
+
+export type TCategories = ICategory[];
