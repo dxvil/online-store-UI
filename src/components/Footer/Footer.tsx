@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { Stack, Button, Typography } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -15,27 +15,22 @@ export const Footer = () => {
                 Cool Store
 			</Typography>
 			<Stack direction="row">
-				<Link to={footerLinks.twitter}>
-					<Button>
-						<TwitterIcon/>
-					</Button>
-				</Link>
-				<Link to={footerLinks.instagram}>
-					<Button>
-						<InstagramIcon/>
-					</Button>
-				</Link>
-				<Link to={footerLinks.pinterest}>
-					<Button>
-						<PinterestIcon/>
-					</Button>
-				</Link>
-				<Link to={footerLinks.facebook}>
-					<Button>
-						<FacebookIcon/>
-					</Button>
-				</Link>
-
+				<a href={footerLinks.twitter} 
+					className="social-media-link">
+					<TwitterIcon/>
+				</a>
+				<a href={footerLinks.instagram} 
+					className="social-media-link">
+					<InstagramIcon/>
+				</a>
+				<a href={footerLinks.pinterest} 
+					className="social-media-link">
+					<PinterestIcon/>
+				</a>
+				<a href={footerLinks.facebook} 
+					className="social-media-link">
+					<FacebookIcon/>
+				</a>
 			</Stack>
 		</Stack>
 		
