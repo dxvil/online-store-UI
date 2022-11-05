@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	createBrowserRouter,
 	RouterProvider,
@@ -9,6 +9,8 @@ import HomePage from "./pages/HomePage/HomePage";
 import { ProductPageItem } from "./pages/ProductItemPage/ProductPageItem";
 import { ProductPage } from "./pages/ProductPage/ProductPage";
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
+import { countQuintity } from "./redux/reducers/cartReducer";
+import { useAppDispatch, useAppSelector } from "./hooks/reduxTyped";
 
 const router = createBrowserRouter([
 	{
@@ -31,12 +33,19 @@ const router = createBrowserRouter([
 	}
 ]);
 
-function App() {
+const App = () => {
+	const dispatch = useAppDispatch();
+	const {items} = useAppSelector((state) => state.cart);
+
+	useEffect(() => {
+		dispatch(countQuintity());
+	}, [items]);
+
 	return (
 		<div className="App">
 			<RouterProvider router={router} />
 		</div>
 	);
-}
+};
 
 export default App;

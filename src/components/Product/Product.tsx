@@ -3,14 +3,12 @@ import { useParams } from "react-router-dom";
 import "./product.css";
 import { api } from "../../api/API";
 import { ProductGallery } from "./ProductGallery";
-import { Box, Typography, Stack, Button } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Box, Typography, Stack } from "@mui/material";
 import { NoItem } from "../NoItem/NoItem";
 import { BackButton } from "../BackButton/BackButton";
-import { pink } from "@mui/material/colors";
 import { IProduct } from "../../types/interfaces";
 import { IProductError } from "../../types/IAPI";
+import {ProductCounter} from "./ProductCounter";
 
 export const Product = () => {
 	const [product, setProduct] = useState<IProduct | IProductError | null>(null);
@@ -48,6 +46,7 @@ export const Product = () => {
 				<Stack direction="column" className="product-header">
 					<Stack direction="row" 
 						alignItems="center"
+						sx={{margin: "0 0 1.5em 0"}}
 						spacing={5} 
 						justifyContent="center">
 						<BackButton link="/products" />
@@ -67,23 +66,11 @@ export const Product = () => {
 						gutterBottom>
 						{product && product?.description}
 					</Typography>
-					<div className="product-buttons">
-						<Button 
-							size="medium"
-							className="product-buy-btn"
-							variant="contained">
-							Buy
-						</Button>
-						<Button 
-							onClick={() => setIsLiked(!isLiked)}
-							className="product-like-btn"
-							variant="outlined">
-							{isLiked 
-								? <FavoriteIcon sx={{ color: pink[500] }} /> 
-								: <FavoriteBorderIcon sx={{ color: pink[500] }} />
-							}
-						</Button>
-					</div>
+					<ProductCounter 
+						isLiked={isLiked} 
+						setIsLiked={setIsLiked}
+						product={product}
+					/>
 				</Stack>
 			</Stack>
 		</Box>

@@ -1,11 +1,15 @@
 import React from "react";
-import { IconButton , Typography } from "@mui/material";
+import { Typography, Badge } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { NavLink, useLocation } from "react-router-dom";
+import { useAppSelector } from "../../hooks/reduxTyped";
+
 import "./menu.css";
 
 export const AppMenu = () => {
 	const location = useLocation();
+	const {quintity} = useAppSelector((state) => state.cart);
+
 	return (
 		<ul className="app-menu-list">
 			{location.pathname !== "/" &&
@@ -27,9 +31,11 @@ export const AppMenu = () => {
 			</li>
 			<li className="app-menu-list-item">
 				<NavLink to="/cart" className="cart-list-item">
-					<IconButton>
+					<Badge 
+						color="primary" 
+						badgeContent={quintity}>
 						<ShoppingCartIcon />
-					</IconButton>
+					</Badge>
 				</NavLink>
 				<div className="cart-list-counter"></div>
 			</li>
