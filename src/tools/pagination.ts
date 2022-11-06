@@ -1,4 +1,4 @@
-function pagination<T> (maxElementsPerPage: number, page: number, elements: T[], amountOfPages: number): T[] {
+function pagination<T> (maxElementsPerPage: number, page: number, elements: T[]): T[] {
 	return elements.slice(maxElementsPerPage * page, maxElementsPerPage * page + maxElementsPerPage);
 }
 

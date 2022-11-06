@@ -1,37 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {Pagination} from "@mui/material";
 interface IPagination {
 	amountOfItems: number
+	pageOfItems: number
 	pageSize: number
 	setPageOfItems?: (page: number) => void
 }
-export const AppPagination = ({amountOfItems, setPageOfItems} : IPagination) => {
-	const [page, setPage] = useState<number>(0);
-
+export const AppPagination = ({amountOfItems, pageOfItems, setPageOfItems} : IPagination) => {
 	const onPage = (page: number): void => {
-		setPage(page);
-	};
-
-	useEffect(() => {
-		if(setPageOfItems !== undefined) {
-			if (page === 1) {
-				setPageOfItems(0);
-			} else if(page > 0) {
-				setPageOfItems(page - 1);
-			}
-			
+		if(setPageOfItems) {
+			setPageOfItems(page);
 		}
-	}, [page]);
+	};
 
 	return (
 		<Pagination 
-			sx={{margin: "5em 0 3em 0"}}
+			sx={{
+				margin: "5em 0 3em 0", 
+				width: "100%", 
+				display: "flex", 
+				justifyContent: "center"
+			}}
 			variant="outlined" 
 			color="primary"
 			count={amountOfItems}
 			onChange={(e: React.BaseSyntheticEvent, page: number) => onPage(page)}
-			page={page}
-			defaultPage={page}
+			page={pageOfItems}
+			defaultPage={pageOfItems}
 			boundaryCount={10}
 		/>
 	);

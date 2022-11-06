@@ -1,4 +1,4 @@
-import { IHttpClient, IHeaders, IProductError } from "../types/IAPI";
+import { IHttpClient, IHeaders, IProductError, TCategories } from "../types/IAPI";
 import { IProduct } from "../types/interfaces";
 
 class HttpClient implements IHttpClient {
@@ -90,8 +90,8 @@ class ApiClient extends HttpClient {
 	}
 	get categories() {
 		return {
-			getAllByCategory: (categoryId: number) => this.get(`/api/v1/categories/${categoryId}/products`),
-			get: () => this.get("/api/v1/categories"),
+			getAllByCategory: (categoryId: number) => this.get<IProduct[] | undefined>(`/api/v1/categories/${categoryId}/products`),
+			get: () => this.get<TCategories | undefined>("/api/v1/categories"),
 		};
 	}
 }
