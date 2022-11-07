@@ -1,9 +1,9 @@
 import React,{ useEffect, useState } from "react";
 import { FormGroup, FormControlLabel, Checkbox,  Box, Stack } from "@mui/material";
-import { ICategory } from "../../types/interfaces";
-import { useAppSelector, useAppDispatch } from "../../hooks/reduxTyped";
-import { fetchListOfCategories, onActiveCategoryChange } from "../../redux/reducers/productsReducer";
-import { useDebounce } from "../../hooks/useDebounce";
+import { ICategory } from "../types/interfaces";
+import { useAppSelector, useAppDispatch } from "../hooks/reduxTyped";
+import { fetchListOfCategories, onActiveCategoryChange } from "../redux/reducers/productsReducer";
+import { useDebounce } from "../hooks/useDebounce";
 
 export const Categories = () => {
 	const dispatch = useAppDispatch();

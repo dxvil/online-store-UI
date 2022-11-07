@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { IProduct } from "../../types/interfaces";
-import { ProductItem } from "../Product/ProductItem";
-import { uuid } from "../../tools/uuid";
-import { pagination } from "../../tools/pagination";
-import { AppPagination } from "../Pagination/Pagination";
-import { Categories } from "../Categories/Categories";
-import {Stack} from "@mui/material";
-import "./products.css";
-import { Search } from "../Search/Search";
-import { fetchAllProducts, fetchAllByCategory, findItem } from "../../redux/reducers/productsReducer";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
+import { IProduct } from "../types/interfaces";
+import { ProductItem } from "./Product/ProductItem";
+import { uuid } from "../tools/uuid";
+import { pagination } from "../tools/pagination";
+import { AppPagination } from "./Pagination";
+import { Categories } from "./Categories";
+import { Stack } from "@mui/material";
+import styles from "../assets/styles/Products.module.css";
+import { Search } from "./Search";
+import { fetchAllProducts, fetchAllByCategory, findItem } from "../redux/reducers/productsReducer";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxTyped";
 
 export const Products = ({maxElements, withPagination, purpose}: {maxElements: number, withPagination: boolean, purpose?: string}) => {
 	const dispatch = useAppDispatch();
@@ -60,10 +60,10 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 	}, [activeCategory, input]);
 
 	return (
-		<div className="products">
+		<div className={styles.products}>
 			{!purpose && 
 			<Stack 
-				className="products-filters"
+				className={styles["products-filters"]}
 				direction="row"
 				justifyContent="center"
 				alignItems="center">

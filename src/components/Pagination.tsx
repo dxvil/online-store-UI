@@ -1,11 +1,7 @@
 import React from "react";
-import {Pagination} from "@mui/material";
-interface IPagination {
-	amountOfItems: number | null
-	pageOfItems: number
-	pageSize: number
-	setPageOfItems?: (page: number) => void
-}
+import { Pagination } from "@mui/material";
+import { IPagination } from "../types/interfaces";
+
 export const AppPagination = ({amountOfItems, pageOfItems, setPageOfItems} : IPagination) => {
 	const onPage = (page: number): void => {
 		if(setPageOfItems) {

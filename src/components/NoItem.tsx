@@ -1,7 +1,7 @@
 import React from "react";
-import {BackButton} from "../BackButton/BackButton";
-import {Stack, Alert, AlertTitle} from "@mui/material";
-import {IProductError} from "../../types/IAPI";
+import { BackButton } from "./BackButton";
+import { Stack, Alert, AlertTitle } from "@mui/material";
+import { IProductError } from "../types/IAPI";
 
 interface INoItem extends IProductError {
     link: string

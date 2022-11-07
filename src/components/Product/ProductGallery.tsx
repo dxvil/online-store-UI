@@ -3,7 +3,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Button, Box } from "@mui/material";
 import { IProduct } from "../../types/interfaces";
-import "./product.css";
+import styles from "../../assets/styles/Product.module.css";
 
 export const ProductGallery = ({product}: {product: IProduct}) => {
 	const [images, setImages] = useState<string[]>([]);
@@ -40,16 +40,16 @@ export const ProductGallery = ({product}: {product: IProduct}) => {
 	};
 
 	return (
-		<Box className="product-img-box">
-			<div className="product-images">
+		<Box className={styles["product-img-box"]}>
+			<div className={styles["product-images"]}>
 				<img 
-					className="product-img"
+					className={styles["product-img"]}
 					src={images[productImage]} 
 					alt="Product image"/>
 				<div className="product-additional-images">
 					<Button 
 						size="small"
-						className="product-img-btn"
+						className={styles["product-img-btn"]}
 						onClick={decreaseCounter}
 						color="primary" aria-label="change picture"
 					>
@@ -58,12 +58,12 @@ export const ProductGallery = ({product}: {product: IProduct}) => {
 					{images.map((image, i) => {
 						if(i !== productImage){
 							return(
-								<button className="extra-img-btn" 
+								<button className={styles["extra-img-btn"]}
 									key={i}
 									onClick={() => onImageChange(i)}
 								>
 									<img 
-										className="product-img"
+										className={styles["product-img"]}
 										src={image} 
 										alt="Product image"/>
 								</button>
@@ -72,7 +72,7 @@ export const ProductGallery = ({product}: {product: IProduct}) => {
 					})}
 					<Button
 						size="small"
-						className="product-img-btn"
+						className={styles["product-img-btn"]}
 						onClick={increaseCounter}
 						color="primary" aria-label="change picture"
 					>

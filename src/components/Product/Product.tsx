@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "./product.css";
+import styles from "../../assets/styles/Product.module.css";
 import { ProductGallery } from "./ProductGallery";
 import { Box, Typography, Stack } from "@mui/material";
-import { NoItem } from "../NoItem/NoItem";
-import { BackButton } from "../BackButton/BackButton";
+import { NoItem } from "../NoItem";
+import { BackButton } from "../BackButton";
 import {ProductCounter} from "./ProductCounter";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
 import { fetchProduct } from "../../redux/reducers/productsReducer";
@@ -33,13 +33,19 @@ export const Product = () => {
 	}
 
 	return (
-		<Box className="product">
-			<Stack direction="row" spacing={10} flexWrap="wrap">
+		<Box className={styles.product}>
+			<Stack 
+				direction="row" 
+				spacing={10} 
+				flexWrap="wrap">
 				{product && "images" in product && product?.images.length !== 0 &&
 						<ProductGallery product={product}/>
 				}
-				<Stack direction="column" className="product-header">
-					<Stack direction="row" 
+				<Stack 
+					direction="column" 
+					className={styles["product-header"]}>
+					<Stack 
+						direction="row" 
 						alignItems="center"
 						sx={{margin: "0 0 1.5em 0"}}
 						spacing={5} 

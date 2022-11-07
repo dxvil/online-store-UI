@@ -12,3 +12,10 @@ export interface IProduct {
 	category: ICategory
 	images: string[]
 }
+
+export interface IPagination {
+	amountOfItems: number | null
+	pageOfItems: number
+	pageSize: number
+	setPageOfItems?: (page: number) => void
+}

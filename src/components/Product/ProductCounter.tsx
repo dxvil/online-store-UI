@@ -10,7 +10,7 @@ import { pink } from "@mui/material/colors";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import "./product.css";
+import styles from "../../assets/styles/Product.module.css";
 
 interface IProductCounter {
     product: IProduct | IProductError | null
@@ -39,12 +39,12 @@ export const ProductCounter = ({product, isLiked, setIsLiked}: IProductCounter) 
 	};
 
 	return (
-		<div className="product-buttons">
+		<div className={styles["product-buttons"]}>
 			{((currentProduct && currentProduct.quintity === 0) || !currentProduct) && 
 			<Button 
 				onClick={() => add()}
 				size="medium"
-				className="product-buy-btn"
+				className={styles["product-buy-btn"]}
 				variant="contained"
 			>
 			Buy
@@ -55,7 +55,7 @@ export const ProductCounter = ({product, isLiked, setIsLiked}: IProductCounter) 
 					direction="row" 
 					spacing={4} 
 					alignItems="center" 
-					className="product-counter">
+					className={styles["product-counter"]}>
 					<Badge 
 						color="secondary" 
 						badgeContent={currentProduct.quintity}>
@@ -79,7 +79,7 @@ export const ProductCounter = ({product, isLiked, setIsLiked}: IProductCounter) 
 			}
 			{isLiked && <Button
 				onClick={() => setIsLiked && setIsLiked(!isLiked)}
-				className="product-like-btn"
+				className={styles["product-like-btn"]}
 				variant="outlined">
 				{isLiked 
 					? <FavoriteIcon sx={{ color: pink[500] }} /> 

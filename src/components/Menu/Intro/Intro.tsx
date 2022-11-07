@@ -1,10 +1,14 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
-import "./intro.css";
+import styles from "../../assets/styles/Intro.module.css";
+
 const Intro = () => {
 	return (
-		<Box  className="intro">
-			<Typography  className="intro-header" variant="h3" gutterBottom>
+		<Box  className={styles.intro}>
+			<Typography  
+				className={styles["intro-header"]}
+				variant="h3" 
+				gutterBottom>
       Haluamme luoda kestäviä tuotteita ympäristöystävällisin menetelmin.
 			</Typography>
 		</Box>

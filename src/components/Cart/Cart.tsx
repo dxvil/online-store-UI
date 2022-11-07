@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack, Alert, Typography, Button } from "@mui/material";
 import { useAppSelector } from "../../hooks/reduxTyped";
-import { BackButton } from "../BackButton/BackButton";
+import { BackButton } from "../BackButton";
 import { CartItem } from "./CartItem";
 
 

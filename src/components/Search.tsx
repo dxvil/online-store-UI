@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@mui/material";
-import { useDebounce } from "../../hooks/useDebounce";
-import {onInputChange} from "../../redux/reducers/productsReducer";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
+import { useDebounce } from "../hooks/useDebounce";
+import {onInputChange} from "../redux/reducers/productsReducer";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxTyped";
 
 export const Search = () => {
 	const dispatch = useAppDispatch();

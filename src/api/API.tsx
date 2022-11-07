@@ -94,6 +94,13 @@ class ApiClient extends HttpClient {
 			get: () => this.get<TCategories | undefined>("/api/v1/categories"),
 		};
 	}
+	get authentication() {
+		return {
+			login: (username: string, password: string) => this.post("/api/v1/auth/login", {
+				"Authorization": "Basic" + btoa(username + ":" + password)
+			})
+		};
+	}
 }
 
 export const api = new ApiClient("https://api.escuelajs.co");
