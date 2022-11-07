@@ -1,4 +1,5 @@
 import { ICategory, IProduct } from "./interfaces";
+import { IProductError } from "./IAPI";
 
 export interface IProductsState {
     allProducts: IProduct[]
@@ -11,4 +12,15 @@ export interface IProductsState {
     foundItemsList: IProduct[]
     activeCategory: number | null
     input: string
+    product: IProduct | IProductError | null
+}
+
+interface CartItem extends IProduct {
+    quintity: number
+}
+
+export interface CartState {
+    items: CartItem[],
+    quintity: number,
+	price: number
 }

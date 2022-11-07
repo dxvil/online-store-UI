@@ -9,7 +9,8 @@ import HomePage from "./pages/HomePage/HomePage";
 import { ProductPageItem } from "./pages/ProductItemPage/ProductPageItem";
 import { ProductPage } from "./pages/ProductPage/ProductPage";
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
-import { countQuintity } from "./redux/reducers/cartReducer";
+import { CartPage }from "./pages/CartPage/CartPage";
+import { countQuintity, countPrice } from "./redux/reducers/cartReducer";
 import { useAppDispatch, useAppSelector } from "./hooks/reduxTyped";
 
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
 	{
 		path: "profile", 
 		element: <ProtectedRoute component={<ProfilePage />} />,
+	},
+	{
+		path: "/cart",
+		element: <CartPage />
 	}
 ]);
 
@@ -39,6 +44,7 @@ const App = () => {
 
 	useEffect(() => {
 		dispatch(countQuintity());
+		dispatch(countPrice());
 	}, [items]);
 
 	return (

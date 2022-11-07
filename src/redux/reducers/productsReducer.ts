@@ -12,7 +12,8 @@ const initialState: IProductsState = {
 	filteredListLength: 0,
 	foundListLength: 0,
 	activeCategory: null,
-	input: ""
+	input: "",
+	product: null
 };
 
 export const productsReducer = createSlice({
@@ -62,6 +63,10 @@ export const productsReducer = createSlice({
 			}
 			return state;
 		});
+		builder.addCase(fetchProduct.fulfilled, (state, action) => {
+			state.product = action.payload ? action.payload : null;
+			return state;
+		});
 	},
 });
 
@@ -73,6 +78,13 @@ export const fetchAllProducts = createAsyncThunk(
 			return await api.products.getAll(offset, maxElements);
 		}
 		return await api.products.getAll();
+	}
+);
+
+export const fetchProduct = createAsyncThunk(
+	"products/fetchProduct",
+	async (id: number) => {
+		return await api.products.get(id);
 	}
 );
 

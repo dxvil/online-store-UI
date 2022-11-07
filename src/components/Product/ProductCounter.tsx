@@ -14,8 +14,8 @@ import "./product.css";
 
 interface IProductCounter {
     product: IProduct | IProductError | null
-    isLiked: boolean
-    setIsLiked: (x: boolean) => void
+    isLiked?: boolean
+    setIsLiked?: (x: boolean) => void
 }
 
 export const ProductCounter = ({product, isLiked, setIsLiked}: IProductCounter) => {
@@ -77,8 +77,8 @@ export const ProductCounter = ({product, isLiked, setIsLiked}: IProductCounter) 
 					</ButtonGroup>
 				</Stack>
 			}
-			<Button 
-				onClick={() => setIsLiked(!isLiked)}
+			{isLiked && <Button
+				onClick={() => setIsLiked && setIsLiked(!isLiked)}
 				className="product-like-btn"
 				variant="outlined">
 				{isLiked 
@@ -86,6 +86,7 @@ export const ProductCounter = ({product, isLiked, setIsLiked}: IProductCounter) 
 					: <FavoriteBorderIcon sx={{ color: pink[500] }} />
 				}
 			</Button>
+			}
 		</div>
 	);
 };

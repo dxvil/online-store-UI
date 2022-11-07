@@ -1,17 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IProduct } from "../../types/interfaces";
+import { CartState } from "../../types/redux";
 
-interface CartItem extends IProduct {
-    quintity: number
-}
-interface InitialState {
-    items: CartItem[],
-    quintity: number
-}
-
-const initialState: InitialState = {
+const initialState: CartState = {
 	items: [],
-	quintity: 0
+	quintity: 0,
+	price: 0
 };
 
 export const cartReducer = createSlice({
@@ -42,9 +35,15 @@ export const cartReducer = createSlice({
 				return prev + next.quintity;
 			}, 0);
 			return {...state, quintity: newQuintity};
+		},
+		countPrice (state) {
+			const price = state.items.reduce((prev, next) => {
+				return prev + next.price;
+			}, 0);
+			return {...state, price: price};
 		}
 	}
 });
 
 
-export const { addItem, removeItem, countQuintity } = cartReducer.actions;
+export const { addItem, removeItem, countQuintity, countPrice } = cartReducer.actions;

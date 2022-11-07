@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./product.css";
-import { api } from "../../api/API";
 import { ProductGallery } from "./ProductGallery";
 import { Box, Typography, Stack } from "@mui/material";
 import { NoItem } from "../NoItem/NoItem";
 import { BackButton } from "../BackButton/BackButton";
-import { IProduct } from "../../types/interfaces";
-import { IProductError } from "../../types/IAPI";
 import {ProductCounter} from "./ProductCounter";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
+import { fetchProduct } from "../../redux/reducers/productsReducer";
 
 export const Product = () => {
-	const [product, setProduct] = useState<IProduct | IProductError | null>(null);
+	const product = useAppSelector((state) => state.products.product);
+	const dispatch = useAppDispatch();
 	const [isLiked, setIsLiked] = useState<boolean>(false);
 	const { id } = useParams();
 
 	useEffect(() => {
 		if(id) {
-			api.products.get(Number(id)).then((res): void => {
-				if (res) {
-					setProduct(res);
-					return;
-				}
-			});
+			dispatch(fetchProduct(Number(id)));
 		}
 	}, [id]);
 	
