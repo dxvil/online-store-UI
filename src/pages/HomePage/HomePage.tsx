@@ -1,11 +1,11 @@
 import React from "react";
-import { Footer } from "../components/Footer";
-import { Products } from "../components/Products";
+import { Footer } from "../../components/Footer";
+import { Products } from "../../components/Products";
 import { Header } from "../../containers/Header/Header";
 
 const HomePage = () => {
 	return (
-		<div>
+		<div className="page">
 			<Header />
 			<Products maxElements={6} withPagination={false} purpose="home" />
 			<Footer />

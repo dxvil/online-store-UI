@@ -46,7 +46,7 @@ export const ProductGallery = ({product}: {product: IProduct}) => {
 					className={styles["product-img"]}
 					src={images[productImage]} 
 					alt="Product image"/>
-				<div className="product-additional-images">
+				<div className={styles["product-additional-images"]}>
 					<Button 
 						size="small"
 						className={styles["product-img-btn"]}

@@ -109,6 +109,7 @@
 
 .product-buttons {
     display: flex;
+    margin: 1em 0 0 0;
 }
 
 .product-counter {

@@ -4,7 +4,7 @@ import { AppMenu } from "../../components/Menu/AppMenu";
 
 export const CartPage = () => {
 	return (
-		<div>
+		<div className="page">
 			<AppMenu />
 			<Cart />
 		</div>

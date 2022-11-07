@@ -1,3 +1,5 @@
+import { IProductError } from "./IAPI";
+
 export interface ICategory {
 	id: number
 	name: string
@@ -18,4 +20,8 @@ export interface IPagination {
 	pageOfItems: number
 	pageSize: number
 	setPageOfItems?: (page: number) => void
+}
+
+export interface INoItem extends IProductError {
+    link: string
 }

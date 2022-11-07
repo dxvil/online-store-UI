@@ -6,6 +6,7 @@ import notfound from "../../assets/images/404.png";
 export const ErrorPage = () => {
 	return (
 		<Stack 
+			className="page"
 			sx={{ 
 				width: "100%", 
 				height: "100vh",

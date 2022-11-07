@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
-import styles from "../../assets/styles/Intro.module.css";
+import styles from "../../../assets/styles/Intro.module.css";
 
 const Intro = () => {
 	return (
