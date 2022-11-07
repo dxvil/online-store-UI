@@ -7,7 +7,7 @@ const HomePage = () => {
 	return (
 		<div>
 			<Header />
-			<Products maxElements={6} pagination={false} />
+			<Products maxElements={6} withPagination={false} purpose="home" />
 			<Footer />
 		</div>
 	);

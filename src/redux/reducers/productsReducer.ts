@@ -1,24 +1,44 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {IProduct} from "../../types/interfaces";
+import { IProductsState } from "../../types/redux";
 import { api } from "../../api/API";
 
-interface IProductsState {
-    allProducts: IProduct[]
-    filteredProducts: IProduct[]
-    searchItem: null | IProduct
-	productsListLength: number
-}
 const initialState: IProductsState = {
 	allProducts: [],
 	filteredProducts: [],
+	foundItemsList: [],
+	categories: [],
 	searchItem: null,
-	productsListLength: 0
+	productsListLength: 0,
+	filteredListLength: 0,
+	foundListLength: 0,
+	activeCategory: null,
+	input: ""
 };
 
 export const productsReducer = createSlice({
 	name: "products",
 	initialState,
-	reducers: {},
+	reducers: {
+		onInputChange(state, action) {
+			state.input = action.payload;
+			return state;
+		},
+		onActiveCategoryChange(state, action) {
+			state.activeCategory = action.payload;
+			return state;
+		},
+		findItem(state, action) {
+			const foundItems = (action.payload.mode === "all" ? 
+				state.allProducts 
+				: state.filteredProducts
+			)
+				.filter((item) => item.title.includes(action.payload.input));
+
+			state.foundItemsList = foundItems;
+			state.foundListLength = foundItems.length;
+			return state;
+		}
+	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchAllProducts.fulfilled, (state, action) => {
 			if(action.payload) {
@@ -27,11 +47,20 @@ export const productsReducer = createSlice({
 				}
 				state.allProducts = [...action.payload];
 			}
+			return state;
 		});
 		builder.addCase(fetchAllByCategory.fulfilled, (state, action) => {
 			if(action.payload) {
+				state.filteredListLength = action.payload.length;
 				state.filteredProducts = [...action.payload];
 			}
+			return state;
+		});
+		builder.addCase(fetchListOfCategories.fulfilled, (state, action) => {
+			if(action.payload) {
+				state.categories = action.payload;
+			}
+			return state;
 		});
 	},
 });
@@ -39,7 +68,6 @@ export const productsReducer = createSlice({
 export const fetchAllProducts = createAsyncThunk(
 	"products/fetchAllProducts",
 	async (params?: {offset?: string, maxElements?: string}) => {
-		console.log(params);
 		if(params && "offset" in params) {
 			const {offset, maxElements} = params;
 			return await api.products.getAll(offset, maxElements);
@@ -48,9 +76,18 @@ export const fetchAllProducts = createAsyncThunk(
 	}
 );
 
-const fetchAllByCategory = createAsyncThunk(
+export const fetchAllByCategory = createAsyncThunk(
 	"products/fetchAllByCategory",
 	async (activeCategory: number) => {
 		return await api.categories.getAllByCategory(activeCategory);
 	}
 );
+
+export const fetchListOfCategories = createAsyncThunk(
+	"products/fetchListOfCategories",
+	async () => {
+		return await api.categories.get();
+	}
+);
+
+export const { findItem, onInputChange, onActiveCategoryChange} = productsReducer.actions;

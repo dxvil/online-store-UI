@@ -7,7 +7,7 @@ export const ProductPage = () => {
 	return (
 		<div>
 			<AppMenu />
-			<Products maxElements={9} pagination={true} />
+			<Products maxElements={9} withPagination={true} />
 			<Footer />
 		</div>
 	);

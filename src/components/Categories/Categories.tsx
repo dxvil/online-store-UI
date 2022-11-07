@@ -1,35 +1,62 @@
-import React,{ useState, useEffect } from "react";
-import { Tabs, Tab, Box } from "@mui/material";
-import { api } from "../../api/API";
+import React,{ useEffect, useState } from "react";
+import { FormGroup, FormControlLabel, Checkbox,  Box, Stack } from "@mui/material";
 import { ICategory } from "../../types/interfaces";
-import { TCategories } from "../../types/IAPI";
-interface ICategoryC {
-    setActiveCategory: (id: number) => void
-    activeCategory: number | null
-}
-export const Categories = ({setActiveCategory, activeCategory}: ICategoryC) => {
-	const [categories, setCategories] = useState<TCategories | undefined>([]);
+import { useAppSelector, useAppDispatch } from "../../hooks/reduxTyped";
+import { fetchListOfCategories, onActiveCategoryChange } from "../../redux/reducers/productsReducer";
+import { useDebounce } from "../../hooks/useDebounce";
 
+export const Categories = () => {
+	const dispatch = useAppDispatch();
+	const [category, setCategory] = useState<null | number>(null);
+	const categories = useAppSelector((state) => state.products.categories);
+	const activeCategory = useAppSelector((state) => state.products.activeCategory);
+	const debouncedCategory = useDebounce(category, 500);
+
+	const onChange = (id: number) => {
+		setCategory(activeCategory === id ? 0 : id);
+	};
 
 	useEffect(() => {
-		api.categories.get().then((res: TCategories | undefined) => {
-			if(res !== undefined) {
-				console.log(res);
-                
-				setCategories(res);
-			}
-		});
+		dispatch(fetchListOfCategories());
 	}, []);
 
+	useEffect(() => {
+		setCategory(activeCategory);
+	}, []);
+
+	useEffect(() => {
+		dispatch(onActiveCategoryChange(debouncedCategory));
+	}, [debouncedCategory]);
+	
 	return (
-		<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-			<Tabs value={activeCategory ?? undefined} onChange={(e, id) => setActiveCategory(id)}>
-				{categories && categories.map((category: ICategory) => {
-					return(
-						<Tab value={category.id} key={category.id} label={category.name} />
-					);
-				})}
-			</Tabs>
+		<Box 
+			sx={{ 
+				borderBottom: 1, 
+				borderColor: "divider",
+				width: "60%",
+			}}>
+			<FormGroup>
+				<Stack 
+					direction="row" 
+					spacing={5} 
+					sx={{flexWrap: "wrap"}} 
+					alignItems="center"
+					justifyContent="center"
+				>
+					{categories && categories.map((category: ICategory) => {
+						return(
+							<FormControlLabel 
+								onChange={() => onChange(category.id)}
+								checked={category.id === activeCategory}
+								defaultChecked={category.id === activeCategory}
+								labelPlacement="start"
+								key={category.id}
+								value={category.id}
+								control={<Checkbox  />} 
+								label={category.name} />
+						);
+					})}</Stack>
+			</FormGroup>
 		</Box>
 	);
 };

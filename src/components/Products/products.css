@@ -4,3 +4,10 @@
     align-items: center;
     flex-wrap: wrap;
 }
+
+.products-filters {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 4em 0 2em 0;
+}
