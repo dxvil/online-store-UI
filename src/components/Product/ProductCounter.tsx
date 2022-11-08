@@ -11,12 +11,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import styles from "../../assets/styles/Product.module.css";
-
-interface IProductCounter {
-    product: IProduct | IProductError | null
-    isLiked?: boolean
-    setIsLiked?: (x: boolean) => void
-}
+import { IProductCounter } from "../../types/interfaces";
 
 export const ProductCounter = ({product, isLiked, setIsLiked}: IProductCounter) => {
 	const dispatch = useAppDispatch();

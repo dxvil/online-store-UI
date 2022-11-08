@@ -1,11 +1,19 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Stack } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
 export const Loader = () => {
 	return (
-		<Box sx={{ display: "flex" }}>
+		<Stack 
+			direction="column"
+			justifyContent="center"
+			alignItems="center"
+			sx={{
+				width: "100%", 
+				height: "100vh"
+			}}
+		>
 			<CircularProgress />
-		</Box>
+		</Stack>
 	);
 };

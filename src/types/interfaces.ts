@@ -25,3 +25,9 @@ export interface IPagination {
 export interface INoItem extends IProductError {
     link: string
 }
+
+export interface IProductCounter {
+    product: IProduct | IProductError | null
+    isLiked?: boolean
+    setIsLiked?: (x: boolean) => void
+}

@@ -1,7 +1,14 @@
 import { ICategory, IProduct } from "./interfaces";
 import { IProductError } from "./IAPI";
 
+export type FetchStatus = "notStarted" | "pending" | "done";
+type ComponentsWithFetch = {
+    singleProduct: FetchStatus,
+    products: FetchStatus,
+    productsByCategories: FetchStatus
+}
 export interface IProductsState {
+    fetchStatus: ComponentsWithFetch
     allProducts: IProduct[]
     filteredProducts: IProduct[]
     searchItem: null | IProduct

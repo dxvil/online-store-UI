@@ -7,10 +7,12 @@ import { NoItem } from "../NoItem";
 import { BackButton } from "../BackButton";
 import {ProductCounter} from "./ProductCounter";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
-import { fetchProduct } from "../../redux/reducers/productsReducer";
+import { fetchProduct, FETCH_STATES } from "../../redux/reducers/productsReducer";
+import { Loader } from "../Loader";
 
 export const Product = () => {
 	const product = useAppSelector((state) => state.products.product);
+	const loadingState = useAppSelector((state) => state.products.fetchStatus.singleProduct);
 	const dispatch = useAppDispatch();
 	const [isLiked, setIsLiked] = useState<boolean>(false);
 	const { id } = useParams();
@@ -31,7 +33,11 @@ export const Product = () => {
 			/>
 		);
 	}
-
+	if(loadingState === FETCH_STATES.PENDING) {
+		return(
+			<Loader />
+		);
+	}
 	return (
 		<Box className={styles.product}>
 			<Stack 

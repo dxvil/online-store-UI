@@ -28,5 +28,6 @@ export const AppPagination = ({amountOfItems, pageOfItems, setPageOfItems} : IPa
 			/>
 		);
 	}
+	
 	return null;
 };

@@ -96,8 +96,11 @@ class ApiClient extends HttpClient {
 	}
 	get authentication() {
 		return {
-			login: (username: string, password: string) => this.post("/api/v1/auth/login", {
+			login: (username: string, password: string) => this.post("/api/v1/auth/login", {}, {
 				"Authorization": "Basic" + btoa(username + ":" + password)
+			}),
+			authentificate: (token: string) => this.post("/api/v1/auth/profile", {}, {
+				"Authorization": `Bearer ${token}`
 			})
 		};
 	}

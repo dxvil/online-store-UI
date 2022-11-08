@@ -1,8 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IProductsState } from "../../types/redux";
 import { api } from "../../api/API";
+import { FetchStatus } from "../../types/redux";
+
+export const FETCH_STATES: {[key: string]: FetchStatus} = {
+	NOT_STARTED: "notStarted",
+	PENDING: "pending",
+	DONE: "done"
+};
 
 const initialState: IProductsState = {
+	fetchStatus: {
+		singleProduct: FETCH_STATES.NOT_STARTED,
+		products: FETCH_STATES.NOT_STARTED,
+		productsByCategories: FETCH_STATES.NOT_STARTED
+	},
 	allProducts: [],
 	filteredProducts: [],
 	foundItemsList: [],
@@ -16,28 +28,39 @@ const initialState: IProductsState = {
 	product: null
 };
 
+export const CATEGORY_MODE = {
+	FILTERED: "filtered",
+	ALL: "all"
+};
+
+
 export const productsReducer = createSlice({
 	name: "products",
 	initialState,
 	reducers: {
 		onInputChange(state, action) {
-			state.input = action.payload;
-			return state;
+			return {
+				...state, 
+				input: action.payload
+			};
 		},
 		onActiveCategoryChange(state, action) {
-			state.activeCategory = action.payload;
-			return state;
+			return {
+				...state, 
+				activeCategory: action.payload
+			};
 		},
 		findItem(state, action) {
-			const foundItems = (action.payload.mode === "all" ? 
+			const foundItems = (action.payload.mode === CATEGORY_MODE.ALL ? 
 				state.allProducts 
 				: state.filteredProducts
 			)
-				.filter((item) => item.title.includes(action.payload.input));
-
-			state.foundItemsList = foundItems;
-			state.foundListLength = foundItems.length;
-			return state;
+				.filter((item) => item.title.toLowerCase().includes(action.payload.input.toLowerCase()));
+			return {
+				...state, 
+				foundItemsList: foundItems, 
+				foundListLength: foundItems.length
+			};
 		}
 	},
 	extraReducers: (builder) => {
@@ -63,11 +86,16 @@ export const productsReducer = createSlice({
 			}
 			return state;
 		});
-		builder.addCase(fetchProduct.fulfilled, (state, action) => {
-			state.product = action.payload ? action.payload : null;
+		builder.addCase(fetchProduct.pending, (state) => {
+			state.fetchStatus.singleProduct = FETCH_STATES.PENDING;
 			return state;
 		});
-	},
+		builder.addCase(fetchProduct.fulfilled, (state, action) => {
+			state.product = action.payload ? action.payload : null;
+			state.fetchStatus.singleProduct = FETCH_STATES.DONE;
+			return state;
+		});
+	}
 });
 
 export const fetchAllProducts = createAsyncThunk(

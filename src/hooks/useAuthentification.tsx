@@ -1,12 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { api } from "../api/API";
-
-export const useAuthentificaton = (username: string, password: string) => {
-
-	useEffect(() => {
-		api.authentication.login(username, password).then((res) => {
-			console.log(res, "res");
+type Login = {
+	login: string,
+	password: string
+}
+type LoginErr = {
+	message: string,
+	statusCode: number
+}
+export const useAuthentificaton = () => {
+	const [user, setUser] = useState<Login>();
+	const [err, setErr] = useState<null | LoginErr>(null);
+	const auth = (username: string, password: string) => {
+		api.authentication.login(username, password).then((res: any) => {
+			if(res.statusCode === 401) {
+				setErr(res);
+				return;
+			}
+			setUser(res);
 		});
-	}, [username, password]);
-
+	};
+	
+	return { user, err, auth };
 };

@@ -9,7 +9,8 @@ import HomePage from "./pages/HomePage/HomePage";
 import { ProductPageItem } from "./pages/ProductItemPage/ProductPageItem";
 import { ProductPage } from "./pages/ProductPage/ProductPage";
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
-import { CartPage }from "./pages/CartPage/CartPage";
+import { CartPage } from "./pages/CartPage/CartPage";
+import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { countQuintity, countPrice } from "./redux/reducers/cartReducer";
 import { useAppDispatch, useAppSelector } from "./hooks/reduxTyped";
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
 	{
 		path: "/cart",
 		element: <CartPage />
+	},
+	{
+		path: "/login",
+		element: <LoginPage />
 	}
 ]);
 
