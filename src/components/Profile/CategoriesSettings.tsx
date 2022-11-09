@@ -5,26 +5,28 @@ import { Stack, Button } from "@mui/material";
 import { CategoryItem } from "./CategoryItem";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { ICategory } from "../../types/interfaces";
-
-type TCategoriesSettings ={
-	onCategoriesModal: boolean,
-	setOnCategoriesModal: (value: boolean) => void
-	setCategoryToEdit: (category: ICategory) => void
-};
+import { ICategory, TCategoriesSettings } from "../../types/interfaces";
+import { cancelUpdatedCategoryState, cancelDeletedCategoryState, onCategoryDelete } from "../../redux/reducers/adminReducer";
 
 export const CategoriesSettings = ({setOnCategoriesModal, setCategoryToEdit}: TCategoriesSettings) => {
 	const dispatch = useAppDispatch();
 	const categories = useAppSelector((state) => state.products.categories);
-	const isUpdated = useAppSelector((state) => state.admin.isUpdated);
+	const isUpdated = useAppSelector((state) => state.admin.isUpdatedCategory);
+	const isDeleted = useAppSelector((state) => state.admin.isDeletedCategory);
 
 	useEffect(() => {
 		dispatch(fetchListOfCategories());
-	}, [isUpdated]);
+		dispatch(cancelUpdatedCategoryState());
+		dispatch(cancelDeletedCategoryState());
+	}, [isUpdated, isDeleted]);
 
 	const onEdit = (item: ICategory): void => {
 		setOnCategoriesModal(true);
 		setCategoryToEdit(item);
+	};
+
+	const onDelete = (id: number): void => {
+		dispatch(onCategoryDelete(id));
 	};
 
 	return (
@@ -55,7 +57,7 @@ export const CategoriesSettings = ({setOnCategoriesModal, setCategoryToEdit}: TC
 							<Button onClick={() => onEdit(category)}>
 								<EditIcon/>
 							</Button>
-							<Button>
+							<Button onClick={() => onDelete(category.id)}>
 								<DeleteIcon/>
 							</Button>
 						</Stack>

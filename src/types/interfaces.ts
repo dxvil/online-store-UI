@@ -31,3 +31,17 @@ export interface IProductCounter {
     isLiked?: boolean
     setIsLiked?: (x: boolean) => void
 }
+
+export type EditModal = {
+    open: boolean,
+    handleClose: (value: boolean) => void,
+    mode: "create" | "edit"
+    values: ICategory | null
+
+}
+
+export type TCategoriesSettings ={
+	onCategoriesModal: boolean,
+	setOnCategoriesModal: (value: boolean) => void
+	setCategoryToEdit: (category: ICategory) => void
+};

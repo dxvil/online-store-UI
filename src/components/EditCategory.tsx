@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {Modal, Stack, Typography, TextField, Button} from "@mui/material";
-import { ICategory } from "../types/interfaces";
 import { useAppDispatch } from "../hooks/reduxTyped";
-import {onCategoryUpdate} from "../redux/reducers/adminReducer";
+import { onCategoryUpdate } from "../redux/reducers/adminReducer";
+import { EditModal } from "../types/interfaces";
 
-type EditModal = {
-    open: boolean,
-    handleClose: (value: boolean) => void,
-    mode: "create" | "edit"
-    values: ICategory | null
-
-}
 export const EditCategory = ({open, handleClose, mode, values}: EditModal) => {
 	const [name, setName] = useState<string>();
 	const [image, setImage]= useState<string>();

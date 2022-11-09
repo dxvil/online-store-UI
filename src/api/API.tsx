@@ -86,13 +86,14 @@ class ApiClient extends HttpClient {
 			get: (id: number) => this.get<IProduct | IProductError>(`/api/v1/products/${id}`),
 			delete: (id: number) => this.delete(`/api/v1/products/${id}`),
 			create: (product: IProduct) => this.post("/api/v1/products/", product),
-			update: (product: IProduct, id: number) => this.put(`/api/v1/products/${id}`, product)
+			update: (product: IProduct, id: number) => this.put(`/api/v1/products/${id}`, product),
 		};
 	}
 	get categories() {
 		return {
 			getAllByCategory: (categoryId: number) => this.get<IProduct[] | undefined>(`/api/v1/categories/${categoryId}/products`),
 			get: () => this.get<TCategories | undefined>("/api/v1/categories"),
+			delete: (id: number) => this.delete(`/api/v1/categories/${id}`),
 			update: (categoryId: number, body: object) => this.put(`/api/v1/categories/${categoryId}`, {...body})
 		};
 	}
