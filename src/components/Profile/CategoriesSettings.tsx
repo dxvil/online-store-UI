@@ -5,15 +5,28 @@ import { Stack, Button } from "@mui/material";
 import { CategoryItem } from "./CategoryItem";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { ICategory } from "../../types/interfaces";
 
-export const CategoriesSettings = () => {
+type TCategoriesSettings ={
+	onCategoriesModal: boolean,
+	setOnCategoriesModal: (value: boolean) => void
+	setCategoryToEdit: (category: ICategory) => void
+};
+
+export const CategoriesSettings = ({setOnCategoriesModal, setCategoryToEdit}: TCategoriesSettings) => {
 	const dispatch = useAppDispatch();
 	const categories = useAppSelector((state) => state.products.categories);
+	const isUpdated = useAppSelector((state) => state.admin.isUpdated);
 
 	useEffect(() => {
 		dispatch(fetchListOfCategories());
-	}, []);
-	
+	}, [isUpdated]);
+
+	const onEdit = (item: ICategory): void => {
+		setOnCategoriesModal(true);
+		setCategoryToEdit(item);
+	};
+
 	return (
 		<Stack 
 			sx={{flexWrap: "wrap", margin: "1em 0"}}
@@ -39,7 +52,7 @@ export const CategoriesSettings = () => {
 						<Stack direction="row"
 							justifyContent="center"
 							alignItems="center">
-							<Button>
+							<Button onClick={() => onEdit(category)}>
 								<EditIcon/>
 							</Button>
 							<Button>

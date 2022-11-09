@@ -93,6 +93,7 @@ class ApiClient extends HttpClient {
 		return {
 			getAllByCategory: (categoryId: number) => this.get<IProduct[] | undefined>(`/api/v1/categories/${categoryId}/products`),
 			get: () => this.get<TCategories | undefined>("/api/v1/categories"),
+			update: (categoryId: number, body: object) => this.put(`/api/v1/categories/${categoryId}`, {...body})
 		};
 	}
 	get authentication() {
