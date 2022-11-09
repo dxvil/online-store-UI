@@ -5,7 +5,8 @@ import { EditCategory } from "../EditCategory";
 import { ICategory } from "../../types/interfaces";
 
 export const Admin = () => {
-	const [onCategoriesModal, setOnCategoriesModal] = useState<boolean>(false);
+	const [onCategoriesModalEdit, setOnCategoriesModalEdit] = useState<boolean>(false);
+	const [onCategoriesModalCreate, setOnCategoriesModalCreate] = useState<boolean>(false);
 	const [categoryToEdit, setCategoryToEdit] = useState<ICategory | null>(null);
 	
 	return (
@@ -13,15 +14,21 @@ export const Admin = () => {
 			<ProfileMenu />
 			<div style={{width: "70%"}}>
 				<CategoriesSettings 
-					onCategoriesModal={onCategoriesModal}
-					setOnCategoriesModal={setOnCategoriesModal}
+					onCategoriesModalEdit={onCategoriesModalEdit}
+					setOnCategoriesModalEdit={setOnCategoriesModalEdit}
+					setOnCategoriesModalCreate={setOnCategoriesModalCreate}
 					setCategoryToEdit={setCategoryToEdit}
 				/>
-				{onCategoriesModal && <EditCategory 
+				{onCategoriesModalEdit && <EditCategory 
 					values={categoryToEdit}
-					open={onCategoriesModal}
-					handleClose={setOnCategoriesModal}
+					open={onCategoriesModalEdit}
+					handleClose={setOnCategoriesModalEdit}
 					mode="edit"
+				/>}
+				{onCategoriesModalCreate && <EditCategory 
+					open={onCategoriesModalCreate}
+					handleClose={setOnCategoriesModalCreate}
+					mode="create"
 				/>}
 			</div>
 		</>

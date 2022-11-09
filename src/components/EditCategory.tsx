@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {Modal, Stack, Typography, TextField, Button} from "@mui/material";
-import { useAppDispatch } from "../hooks/reduxTyped";
-import { onCategoryUpdate } from "../redux/reducers/adminReducer";
+import {Modal, Stack, Typography, Alert, TextField, Button} from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxTyped";
+import { onCategoryUpdate, onCategoryCreate } from "../redux/reducers/adminReducer";
 import { EditModal } from "../types/interfaces";
 
 export const EditCategory = ({open, handleClose, mode, values}: EditModal) => {
 	const [name, setName] = useState<string>();
 	const [image, setImage]= useState<string>();
 	const dispatch = useAppDispatch();
-
+	
 	useEffect(() => {
 		if(values) {
 			setName(values.name);
@@ -25,6 +25,16 @@ export const EditCategory = ({open, handleClose, mode, values}: EditModal) => {
 					name,
 					image
 				}
+			}));
+			handleClose(false);
+		}
+	};
+
+	const onCreate = () => {
+		if(name && image) {
+			dispatch(onCategoryCreate({
+				name,
+				image
 			}));
 			handleClose(false);
 		}
@@ -75,6 +85,8 @@ export const EditCategory = ({open, handleClose, mode, values}: EditModal) => {
 							onEdit();
 							return;
 						}
+						onCreate();
+						return;
 					}}
 					variant="contained" 
 					sx={{width: "10em"}}>

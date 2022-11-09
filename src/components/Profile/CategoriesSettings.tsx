@@ -6,22 +6,24 @@ import { CategoryItem } from "./CategoryItem";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ICategory, TCategoriesSettings } from "../../types/interfaces";
-import { cancelUpdatedCategoryState, cancelDeletedCategoryState, onCategoryDelete } from "../../redux/reducers/adminReducer";
+import { cancelUpdatedCategoryState, cancelCreatedCategoryState, cancelDeletedCategoryState, onCategoryDelete } from "../../redux/reducers/adminReducer";
 
-export const CategoriesSettings = ({setOnCategoriesModal, setCategoryToEdit}: TCategoriesSettings) => {
+export const CategoriesSettings = ({setOnCategoriesModalEdit, setOnCategoriesModalCreate, setCategoryToEdit}: TCategoriesSettings) => {
 	const dispatch = useAppDispatch();
 	const categories = useAppSelector((state) => state.products.categories);
 	const isUpdated = useAppSelector((state) => state.admin.isUpdatedCategory);
 	const isDeleted = useAppSelector((state) => state.admin.isDeletedCategory);
-
+	const isCreated = useAppSelector((state) => state.admin.isCreatedCategory);
 	useEffect(() => {
 		dispatch(fetchListOfCategories());
 		dispatch(cancelUpdatedCategoryState());
 		dispatch(cancelDeletedCategoryState());
-	}, [isUpdated, isDeleted]);
+		dispatch(cancelCreatedCategoryState());
+	}, [isUpdated, isDeleted, isCreated]);
 
 	const onEdit = (item: ICategory): void => {
-		setOnCategoriesModal(true);
+		setOnCategoriesModalEdit(true);
+		setOnCategoriesModalCreate(false);
 		setCategoryToEdit(item);
 	};
 
@@ -29,16 +31,23 @@ export const CategoriesSettings = ({setOnCategoriesModal, setCategoryToEdit}: TC
 		dispatch(onCategoryDelete(id));
 	};
 
+	const onCreate = () => {
+		setOnCategoriesModalEdit(false);
+		setOnCategoriesModalCreate(true);
+	};
+
 	return (
 		<Stack 
 			sx={{flexWrap: "wrap", margin: "1em 0"}}
 			justifyContent="center"
 			direction="row">
-			<Button sx={{
-				width: "250px", 
-				height: "250px", 
-				margin: "1em 2em", 
-				padding: "1em"}}>
+			<Button 
+				onClick={() => onCreate()}
+				sx={{
+					width: "250px", 
+					height: "250px", 
+					margin: "1em 2em", 
+					padding: "1em"}}>
 				Create Category
 			</Button>
 			{categories.map((category) => {

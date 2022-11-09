@@ -6,6 +6,11 @@ export interface ICategory {
 	image: string
 }
 
+export interface INewCategory {
+	name: string
+	image: string
+}
+
 export interface IProduct {
 	id: number
 	title: string
@@ -36,12 +41,13 @@ export type EditModal = {
     open: boolean,
     handleClose: (value: boolean) => void,
     mode: "create" | "edit"
-    values: ICategory | null
+    values?: ICategory | null
 
 }
 
 export type TCategoriesSettings ={
-	onCategoriesModal: boolean,
-	setOnCategoriesModal: (value: boolean) => void
+	onCategoriesModalEdit: boolean,
+	setOnCategoriesModalEdit: (value: boolean) => void
 	setCategoryToEdit: (category: ICategory) => void
+	setOnCategoriesModalCreate: (value: boolean) => void
 };

@@ -1,5 +1,5 @@
-import { IHttpClient, IHeaders, IProductError, TCategories, IUser, LoginErr } from "../types/IAPI";
-import { IProduct } from "../types/interfaces";
+import { IHttpClient, IHeaders, IProductError, TCategories, IUser, LoginErr, ICategory } from "../types/IAPI";
+import { INewCategory, IProduct } from "../types/interfaces";
 
 class HttpClient implements IHttpClient {
 	_baseUrl;
@@ -15,7 +15,7 @@ class HttpClient implements IHttpClient {
 				...options,
 				headers: this._headers});
 		
-		if (!res.ok) throw new Error(res.statusText);
+		if (!res.ok) alert(res.statusText);
 		
 		if (options && res.status !== 204)
 			return res.json();
@@ -94,6 +94,7 @@ class ApiClient extends HttpClient {
 			getAllByCategory: (categoryId: number) => this.get<IProduct[] | undefined>(`/api/v1/categories/${categoryId}/products`),
 			get: () => this.get<TCategories | undefined>("/api/v1/categories"),
 			delete: (id: number) => this.delete(`/api/v1/categories/${id}`),
+			create: (data: INewCategory) => this.post("/api/v1/categories/", data),
 			update: (categoryId: number, body: object) => this.put(`/api/v1/categories/${categoryId}`, {...body})
 		};
 	}
