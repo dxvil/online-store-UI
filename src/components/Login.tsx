@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, TextField, Typography, Button } from "@mui/material";
+import { ApiError } from "./ApiError";
 import { useAuthentificaton } from "../hooks/useAuthentification";
+import { useAppSelector } from "../hooks/reduxTyped";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
 	const [login, setLogin] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
-	const { err, auth } = useAuthentificaton();
+	const { loginError, auth } = useAuthentificaton();
+	const isLogin = useAppSelector((state) => state.user.isLogin);
+	const navigate = useNavigate();
 
 	const onSubmit = (e: React.BaseSyntheticEvent) => {
 		e.preventDefault();
 		auth(login, password);
 	};
+
+
+	useEffect(() => {
+		if(isLogin) {
+			navigate("/profile");
+		}
+	}, [isLogin]);
 
 	return (
 		<Box
@@ -47,7 +59,11 @@ export const Login = () => {
 				type="submit">
                 Login
 			</Button>
-			{err && <p style={{margin: "5em 0", fontSize: "2em"}}>{err.statusCode} {err.message}</p>}
+
+			{loginError && <ApiError 
+				message={loginError.message} 
+				statusCode={loginError.statusCode}
+			/>}
 		</Box>
 	);
 };

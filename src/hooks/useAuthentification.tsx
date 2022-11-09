@@ -1,25 +1,35 @@
 import React, { useState } from "react";
 import { api } from "../api/API";
-type Login = {
-	login: string,
-	password: string
-}
-type LoginErr = {
-	message: string,
-	statusCode: number
-}
+import { useAppDispatch } from "./reduxTyped";
+import { onCurrentUser } from "../redux/reducers/userReducer";
+import { LoginErr } from "../types/IAPI";
+import { onSetCookie } from "../tools/cookie";
+
 export const useAuthentificaton = () => {
-	const [user, setUser] = useState<Login>();
-	const [err, setErr] = useState<null | LoginErr>(null);
-	const auth = (username: string, password: string) => {
-		api.authentication.login(username, password).then((res: any) => {
-			if(res.statusCode === 401) {
-				setErr(res);
-				return;
-			}
-			setUser(res);
-		});
+	const [loginError, setLoginError] = useState<null | LoginErr>(null);
+	const [userError, setUserError] = useState<null | LoginErr>(null);
+	const dispatch = useAppDispatch();
+
+	const getUser = async (token: string) => {
+		try{
+			const res = await api.authentication.authentificate(token);
+			onSetCookie(token);
+			dispatch(onCurrentUser(res));
+		} catch(err: any) {
+			setUserError(err);
+		}
 	};
-	
-	return { user, err, auth };
+
+	const auth = async (email: string, password: string) => {
+		try{
+			const res = await api.authentication.login(email, password);
+			if(res !== undefined && "access_token" in res) {
+				await getUser(res["access_token"]);
+			}
+		} catch(err: any) {
+			setLoginError(err);
+		}
+	};
+		
+	return { loginError, userError, auth, getUser };
 };

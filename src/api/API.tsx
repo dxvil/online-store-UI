@@ -1,34 +1,34 @@
-import { IHttpClient, IHeaders, IProductError, TCategories } from "../types/IAPI";
+import { IHttpClient, IHeaders, IProductError, TCategories, IUser, LoginErr } from "../types/IAPI";
 import { IProduct } from "../types/interfaces";
 
 class HttpClient implements IHttpClient {
-	baseUrl;
-	headers;
+	_baseUrl;
+	_headers;
 	constructor(options: IHttpClient) {
-		this.baseUrl = options.baseUrl || "";
-		this.headers = options.headers || {};
+		this._baseUrl = options._baseUrl || "";
+		this._headers = options._headers || {};
 	}
 
 	async _fetch<T>(endpoint: string, options = {}): Promise<T | undefined> {
-		const res = await fetch(this.baseUrl + endpoint, {
-			...options,
-			headers: this.headers
-		});
-    
-		if (res.status !== 204) {
+		const res = await fetch(this._baseUrl + endpoint, 
+			{
+				...options,
+				headers: this._headers});
+		
+		if (!res.ok) throw new Error(res.statusText);
+		
+		if (options && res.status !== 204)
 			return res.json();
-		}
-			
-    
+		
 		return undefined;
 	}
 
 	set setHeader({key, value}: IHeaders) {
-		this.headers[key]  = value;
+		this._headers[key]  = value;
 	}
 
 	getHeader({key}: IHeaders) {
-		return this.headers[key];
+		return this._headers[key];
 	}
 
 	get<T>(endpoint: string, options: object = {}) {
@@ -38,24 +38,25 @@ class HttpClient implements IHttpClient {
 		});
 	}
     
-	post(endpoint: string, body: object, options: object = {}) {
-		return this._fetch(endpoint, {
+	post<T>(endpoint: string, body: object, options: object = {}) {
+		return this._fetch<T>(endpoint, {
 			...options,
+			parseResponse: false,
 			body: body ? JSON.stringify(body) : undefined,
 			method: "POST"
 		});
 	}
     
-	put(endpoint: string, body: object, options: object = {}) {
-		return this._fetch(endpoint, {
+	put<T>(endpoint: string, body: object, options: object = {}) {
+		return this._fetch<T>(endpoint, {
 			...options,
 			body: body ? JSON.stringify(body) : undefined,
 			method: "PUT"
 		});
 	}
     
-	patch(endpoint: string, operations: object, options: object = {}) {
-		return this._fetch(endpoint, {
+	patch<T>(endpoint: string, operations: object, options: object = {}) {
+		return this._fetch<T>(endpoint, {
 			parseResponse: false,
 			...options,
 			body: JSON.stringify(operations),
@@ -63,8 +64,8 @@ class HttpClient implements IHttpClient {
 		});
 	}
     
-	delete(endpoint: string, options: object = {}) {
-		return this._fetch(endpoint, {
+	delete<T>(endpoint: string, options: object = {}) {
+		return this._fetch<T>(endpoint, {
 			parseResponse: false,
 			...options,
 			method: "DELETE"
@@ -73,10 +74,10 @@ class HttpClient implements IHttpClient {
 }
 
 class ApiClient extends HttpClient {
-	constructor(baseUrl: string) {
+	constructor(_baseUrl: string, _headers: IHeaders) {
 		super({
-			baseUrl,
-			headers: {}
+			_baseUrl,
+			_headers
 		});
 	}
 	get products() {
@@ -96,14 +97,19 @@ class ApiClient extends HttpClient {
 	}
 	get authentication() {
 		return {
-			login: (username: string, password: string) => this.post("/api/v1/auth/login", {}, {
-				"Authorization": "Basic" + btoa(username + ":" + password)
-			}),
-			authentificate: (token: string) => this.post("/api/v1/auth/profile", {}, {
-				"Authorization": `Bearer ${token}`
-			})
+			login: (email: string, password: string) => this.post<IUser | LoginErr>("/api/v1/auth/login", {"email": email, "password": password}),
+			authentificate: (token: string) => {
+				this._headers = {
+					...this._headers,
+					"Authorization": `Bearer ${token}`
+				};
+				return this.get<IUser | LoginErr>("/api/v1/auth/profile");
+			}
 		};
 	}
 }
 
-export const api = new ApiClient("https://api.escuelajs.co");
+export const api = new ApiClient("https://api.escuelajs.co", {
+	"Content-Type": "application/json",
+	"Accept": "*/*"
+});

@@ -8,26 +8,22 @@ export const AppPagination = ({amountOfItems, pageOfItems, setPageOfItems} : IPa
 			setPageOfItems(page);
 		}
 	};
-
-	if(amountOfItems) {
-		return (
-			<Pagination 
-				sx={{
-					margin: "5em 0 3em 0", 
-					width: "100%", 
-					display: "flex", 
-					justifyContent: "center"
-				}}
-				variant="outlined" 
-				color="primary"
-				count={amountOfItems !== null ? amountOfItems : 1}
-				onChange={(e: React.BaseSyntheticEvent, page: number) => onPage(page)}
-				page={pageOfItems}
-				defaultPage={pageOfItems}
-				boundaryCount={10}
-			/>
-		);
-	}
 	
-	return null;
+	return (
+		<Pagination 
+			sx={{
+				margin: "5em 0 3em 0", 
+				width: "100%", 
+				display: "flex", 
+				justifyContent: "center"
+			}}
+			variant="outlined" 
+			color="primary"
+			count={amountOfItems !== null ? amountOfItems : 1}
+			onChange={(e: React.BaseSyntheticEvent, page: number) => onPage(page)}
+			page={pageOfItems}
+			defaultPage={pageOfItems}
+			boundaryCount={10}
+		/>
+	);
 };

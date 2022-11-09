@@ -10,6 +10,7 @@ import styles from "../assets/styles/Products.module.css";
 import { Search } from "./Search";
 import { fetchAllProducts, fetchAllByCategory, findItem, CATEGORY_MODE } from "../redux/reducers/productsReducer";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxTyped";
+import { CategoryMode } from "../types/redux";
 
 export const Products = ({maxElements, withPagination, purpose}: {maxElements: number, withPagination: boolean, purpose?: string}) => {
 	const dispatch = useAppDispatch();
@@ -30,7 +31,7 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 	}, [maxElements, pageOfItems, foundItemsList]);
 
 	const onFindItem = () => {
-		const mode = activeCategory ? CATEGORY_MODE.FILTERED : CATEGORY_MODE.ALL;
+		const mode: CategoryMode = activeCategory ? CATEGORY_MODE.FILTERED : CATEGORY_MODE.ALL;
 		dispatch(findItem({input, mode}));
 	};
 
@@ -78,22 +79,20 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 				<Search />
 			</Stack>
 			}
-			{!activeCategory && input === "" ?
+			{!activeCategory && input === "" &&
 				pagination<IProduct>(maxElements, pageOfItems, allProducts)
 					.map((item) => {
 						return(
 							<ProductItem item={item} key={uuid()} />
 						);
 					})
-				: <p></p>
 			}
-			{activeCategory && input === "" && filtered.length !== 0 ?
+			{activeCategory && input === "" && filtered.length !== 0 &&
 				filtered.map((item) => {
 					return(
 						<ProductItem item={item} key={uuid()} />
 					);
 				})
-				: <></>
 			}
 			{input && searched.length !== 0 && 
 			searched.map((item) => {
@@ -102,7 +101,7 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 				);
 			})
 			}
-			{withPagination && amountOfItems &&
+			{withPagination && amountOfItems > 0 &&
 					<AppPagination 
 						amountOfItems={amountOfItems} 
 						pageOfItems={pageOfItems}

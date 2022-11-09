@@ -1,17 +1,30 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { api } from "../../api/API";
-type State = {
-    isLogin: boolean
-}
-const initialState: State = {
-	isLogin: false
+import { IUser, LoginErr } from "../../types/IAPI";
+import { UserReducer } from "../../types/redux";
+
+const initialState: UserReducer = {
+	isLogin: false,
+	user: undefined
 };
 
 export const userReducer = createSlice({
 	name: "user", 
 	initialState,
 	reducers: {
-        
+		onCurrentUser(state, action: PayloadAction<IUser | LoginErr | undefined>) {
+			if(action.payload !== undefined && "name" in action.payload) {
+				state = {
+					isLogin: true,
+					user: {
+						id: action.payload.id,
+						name: action.payload.name,
+						role: action.payload.role
+					}
+				};
+			}
+			return state;
+		}
 	},
 });
 
@@ -26,3 +39,4 @@ export const authentificate = createAsyncThunk(
 	}
 );
 
+export const { onCurrentUser } = userReducer.actions;

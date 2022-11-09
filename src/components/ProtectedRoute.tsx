@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../hooks/reduxTyped";
 
 export const ProtectedRoute = ({component}: {component: React.ReactNode}) => {
-	const isAuthentificated = false; 
+	const isAuthentificated = useAppSelector((state) => state.user.isLogin); 
 	const navigate = useNavigate();
 
 	useEffect(() => {

@@ -1,6 +1,6 @@
 export interface IHttpClient {
-    baseUrl: string
-    headers: IHeaders
+    _baseUrl: string
+    _headers: IHeaders
 }
 
 export interface IHeaders {
@@ -20,3 +20,19 @@ export interface ICategory {
 }
 
 export type TCategories = ICategory[];
+
+export interface IUser {
+    id: number,
+    name: string
+    role: string
+}
+
+export type Login = {
+	login: string,
+	password: string
+}
+
+export type LoginErr = {
+	message: string,
+	statusCode: number
+}

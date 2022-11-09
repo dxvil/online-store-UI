@@ -1,12 +1,14 @@
 import { ICategory, IProduct } from "./interfaces";
-import { IProductError } from "./IAPI";
+import { IProductError, IUser } from "./IAPI";
 
 export type FetchStatus = "notStarted" | "pending" | "done";
+
 type ComponentsWithFetch = {
     singleProduct: FetchStatus,
     products: FetchStatus,
     productsByCategories: FetchStatus
 }
+
 export interface IProductsState {
     fetchStatus: ComponentsWithFetch
     allProducts: IProduct[]
@@ -30,4 +32,20 @@ export interface CartState {
     items: CartItem[],
     quintity: number,
 	price: number
+}
+
+export type UserReducer = {
+    isLogin: boolean,
+	user: undefined | IUser
+}
+export type CategoryMode = "all" | "filtered";
+
+export type FindItem = {
+    input: string,
+    mode: CategoryMode
+}
+
+export type TCATEGORY_MODE = {
+	FILTERED: CategoryMode,
+	ALL: CategoryMode
 }

@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IProductsState } from "../../types/redux";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { api } from "../../api/API";
-import { FetchStatus } from "../../types/redux";
+import { IProductsState, FetchStatus, FindItem, TCATEGORY_MODE } from "../../types/redux";
+import { IProduct } from "../../types/interfaces";
+import { IProductError } from "../../types/IAPI";
 
 export const FETCH_STATES: {[key: string]: FetchStatus} = {
 	NOT_STARTED: "notStarted",
@@ -28,30 +29,29 @@ const initialState: IProductsState = {
 	product: null
 };
 
-export const CATEGORY_MODE = {
+export const CATEGORY_MODE: TCATEGORY_MODE = {
 	FILTERED: "filtered",
 	ALL: "all"
 };
-
 
 export const productsReducer = createSlice({
 	name: "products",
 	initialState,
 	reducers: {
-		onInputChange(state, action) {
+		onInputChange(state, action: PayloadAction<string>) {
 			return {
 				...state, 
 				input: action.payload
 			};
 		},
-		onActiveCategoryChange(state, action) {
+		onActiveCategoryChange(state, action: PayloadAction<number>) {
 			return {
 				...state, 
 				activeCategory: action.payload
 			};
 		},
-		findItem(state, action) {
-			const foundItems = (action.payload.mode === CATEGORY_MODE.ALL ? 
+		findItem(state, action: PayloadAction<FindItem>) {
+			const foundItems: IProduct[] = (action.payload.mode === CATEGORY_MODE.ALL ? 
 				state.allProducts 
 				: state.filteredProducts
 			)
@@ -90,11 +90,12 @@ export const productsReducer = createSlice({
 			state.fetchStatus.singleProduct = FETCH_STATES.PENDING;
 			return state;
 		});
-		builder.addCase(fetchProduct.fulfilled, (state, action) => {
-			state.product = action.payload ? action.payload : null;
-			state.fetchStatus.singleProduct = FETCH_STATES.DONE;
-			return state;
-		});
+		builder.addCase(fetchProduct.fulfilled, 
+			(state, action: PayloadAction<IProduct | IProductError | undefined>) => {
+				state.product = action.payload ? action.payload : null;
+				state.fetchStatus.singleProduct = FETCH_STATES.DONE;
+				return state;
+			});
 	}
 });
 
