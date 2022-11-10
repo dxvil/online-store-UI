@@ -1,41 +1,70 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
-import { fetchListOfCategories } from "../../redux/reducers/productsReducer";
+import { fetchListOfCategories, fetchAllProducts } from "../../redux/reducers/productsReducer";
 import { Stack, Button } from "@mui/material";
-import { CategoryItem } from "./CategoryItem";
+import { Item } from "./Item";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { ICategory, TCategoriesSettings } from "../../types/interfaces";
+import { ICategory, IProduct, TSettings } from "../../types/interfaces";
 import { cancelUpdatedCategoryState, cancelCreatedCategoryState, cancelDeletedCategoryState, onCategoryDelete } from "../../redux/reducers/adminReducer";
+import {uuid} from "../../tools/uuid";
 
-export const CategoriesSettings = ({setOnCategoriesModalEdit, setOnCategoriesModalCreate, setCategoryToEdit}: TCategoriesSettings) => {
+export function Settings<T>({
+	list,
+	context, 
+	onModalEdit, 
+	onModalCreate, 
+	setItemToEdit
+}: TSettings<T>) {
 	const dispatch = useAppDispatch();
-	const categories = useAppSelector((state) => state.products.categories);
 	const isUpdated = useAppSelector((state) => state.admin.isUpdatedCategory);
 	const isDeleted = useAppSelector((state) => state.admin.isDeletedCategory);
 	const isCreated = useAppSelector((state) => state.admin.isCreatedCategory);
-	useEffect(() => {
-		dispatch(fetchListOfCategories());
-		dispatch(cancelUpdatedCategoryState());
-		dispatch(cancelDeletedCategoryState());
-		dispatch(cancelCreatedCategoryState());
-	}, [isUpdated, isDeleted, isCreated]);
 
-	const onEdit = (item: ICategory): void => {
-		setOnCategoriesModalEdit(true);
-		setOnCategoriesModalCreate(false);
-		setCategoryToEdit(item);
+	const onCategoriesContext = () => {
+		if(context === "categories") {
+			dispatch(fetchListOfCategories());
+			dispatch(cancelUpdatedCategoryState());
+			dispatch(cancelDeletedCategoryState());
+			dispatch(cancelCreatedCategoryState());
+		}
 	};
 
-	const onDelete = (id: number): void => {
+	const onProdcutsContext = () => {
+		if(context === "products") {
+			dispatch(fetchAllProducts({maxElements: "5", offset: "0"}));
+		}
+	};
+
+	useEffect(() => {
+		onProdcutsContext();
+	}, []);
+
+	useEffect(() => {
+		onCategoriesContext();
+	}, [isUpdated, isDeleted, isCreated]);
+
+	const onEdit = (item: T) => {
+		onModalEdit(true);
+		onModalCreate(false);
+		setItemToEdit(item);
+	};
+
+	const onDelete = (id: number) => {
+		if(context === "categories") {
+			return onDeleteCatgories(id);
+		}
+	};
+
+	const onDeleteCatgories = (id: number): void => {
 		dispatch(onCategoryDelete(id));
 	};
 
 	const onCreate = () => {
-		setOnCategoriesModalEdit(false);
-		setOnCategoriesModalCreate(true);
+		onModalEdit(false);
+		onModalCreate(true);
 	};
-
+	
 	return (
 		<Stack 
 			sx={{flexWrap: "wrap", margin: "1em 0"}}
@@ -50,7 +79,7 @@ export const CategoriesSettings = ({setOnCategoriesModalEdit, setOnCategoriesMod
 					padding: "1em"}}>
 				Create Category
 			</Button>
-			{categories.map((category) => {
+			{list.map((item: T) => {
 				return (
 					<Stack 
 						direction="column"
@@ -59,21 +88,25 @@ export const CategoriesSettings = ({setOnCategoriesModalEdit, setOnCategoriesMod
 						sx={{
 							flexWrap: "wrap"
 						}}
-						key={`${category.id}-category-settings`}>
+						key={uuid()}>
 						<Stack direction="row"
 							justifyContent="center"
 							alignItems="center">
-							<Button onClick={() => onEdit(category)}>
+							<Button onClick={() => onEdit(item)}>
 								<EditIcon/>
 							</Button>
-							<Button onClick={() => onDelete(category.id)}>
+							<Button onClick={() => {
+								if(item && "id" in item) {
+									onDelete(item["id"]);
+								}
+							}}>
 								<DeleteIcon/>
 							</Button>
 						</Stack>
-						<CategoryItem name={category.name} image={category.image} />
+						<Item<T> item={item} />
 					</Stack>
 				);
 			})}
 		</Stack>
 	);
-};
+}

@@ -1,7 +1,17 @@
 import React from "react";
 import { Card, Typography, CardMedia } from "@mui/material";
 
-export const CategoryItem = ({name, image}: { name: string, image: string}) => {
+export function Item<T>({item}: {item: T}) {
+	const header = () => {
+		if(item && "title" in item) return item["title"];
+		if(item && "name" in item) return item["name"];
+	};
+	const image = () => {
+		if(item && "image" in item) return item["image"];
+		if(item && "images" in item) return item["images"][0];
+	};
+
+
 	return (
 		<Card 
 			sx={{ 
@@ -11,14 +21,15 @@ export const CategoryItem = ({name, image}: { name: string, image: string}) => {
 				margin: "1em",
 				textAlign: "center" }}>
 			<Typography gutterBottom variant="h5" component="div">
-				{name}
+				{header()}
 			</Typography>
 			<CardMedia
 				component="img"
 				height="140"
-				image={image}
+				image={image()}
 				alt="item image"
 			/>
 		</Card>
 	);
-};
+}
+

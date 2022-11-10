@@ -49,7 +49,6 @@ export const onCategoryUpdate = createAsyncThunk(
 			return res;
 		}
 		catch(err) {
-			console.log(err);
 			return err;
 		}
 	}

@@ -41,13 +41,15 @@ export type EditModal = {
     open: boolean,
     handleClose: (value: boolean) => void,
     mode: "create" | "edit"
-    values?: ICategory | null
+    values?: ICategory | IProduct | null
 
 }
 
-export type TCategoriesSettings ={
-	onCategoriesModalEdit: boolean,
-	setOnCategoriesModalEdit: (value: boolean) => void
-	setCategoryToEdit: (category: ICategory) => void
-	setOnCategoriesModalCreate: (value: boolean) => void
+export type TSettings<T> ={
+	list: T[],
+	context: "categories" | "products",
+	modalEdit: boolean,
+	onModalEdit: (value: boolean) => void
+	setItemToEdit: (item: T) => void
+	onModalCreate: (value: boolean) => void
 };

@@ -4,17 +4,17 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxTyped";
 import { onCategoryUpdate, onCategoryCreate } from "../redux/reducers/adminReducer";
 import { EditModal } from "../types/interfaces";
 
-export const EditCategory = ({open, handleClose, mode, values}: EditModal) => {
+export const SettingsModal = ({open, handleClose, mode, values}: EditModal) => {
 	const [name, setName] = useState<string>();
 	const [image, setImage]= useState<string>();
 	const dispatch = useAppDispatch();
-	
-	useEffect(() => {
-		if(values) {
-			setName(values.name);
-			setImage(values.image);
-		}
-	}, [values]);
+	const title = mode === "edit" ? "Edit" : "Create";
+	// useEffect(() => {
+	// 	if(values) {
+	// 		setName(values.name);
+	// 		setImage(values.image);
+	// 	}
+	// }, [values]);
 
 	const onEdit = () => {
 		if(values) {
@@ -61,7 +61,7 @@ export const EditCategory = ({open, handleClose, mode, values}: EditModal) => {
 				sx={{backgroundColor: "#fff", width: "50%", padding: "3em"}}
 				justifyContent="center">
 				<Typography id="modal-modal-title" variant="h6" component="h2">
-                    Edit Category
+					{title} Category
 				</Typography>
 				<TextField 
 					sx={{width: "60%"}}
@@ -90,7 +90,7 @@ export const EditCategory = ({open, handleClose, mode, values}: EditModal) => {
 					}}
 					variant="contained" 
 					sx={{width: "10em"}}>
-					{mode === "edit" ? "Edit" : "Create"}
+					{title}
 				</Button>
 			</Stack>
 		</Modal>
