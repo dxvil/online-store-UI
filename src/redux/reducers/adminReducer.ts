@@ -1,11 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { api } from "../../api/API";
-import { INewCategory, ICategory } from "../../types/interfaces";
+import { INewCategory, ICategory, IProduct, INewProduct } from "../../types/interfaces";
 
 const initialState = {
 	isUpdatedCategory: false,
 	isDeletedCategory: false,
 	isCreatedCategory: false,
+	isUpdatedProduct: false,
+	isDeletedProduct: false,
+	isCreatedProduct: false,
 };
 
 export const adminReducer = createSlice({
@@ -21,7 +24,19 @@ export const adminReducer = createSlice({
 			return state;
 		},
 		cancelCreatedCategoryState(state) {
-			state.isCreatedCategory = false;
+			state.isCreatedProduct = false;
+			return state;
+		},
+		cancelUpdatedProductState(state) {
+			state.isUpdatedProduct = false;
+			return state;
+		},
+		cancelDeletedProductState(state) {
+			state.isDeletedCategory = false;
+			return state;
+		},
+		cancelCreatedProductState(state) {
+			state.isCreatedProduct = false;
 			return state;
 		}
 	},
@@ -36,6 +51,14 @@ export const adminReducer = createSlice({
 		});
 		builder.addCase(onCategoryCreate.fulfilled, (state) => {
 			state.isCreatedCategory = true;
+			return state;
+		});
+		builder.addCase(onProductUpdate.fulfilled, (state) => {
+			state.isUpdatedProduct = true;
+			return state;
+		});
+		builder.addCase(onProductCreate.fulfilled, (state) => {
+			state.isCreatedProduct = true;
 			return state;
 		});
 	}
@@ -77,4 +100,37 @@ export const onCategoryCreate = createAsyncThunk(
 		}
 	}
 );
-export const {cancelDeletedCategoryState, cancelCreatedCategoryState, cancelUpdatedCategoryState} = adminReducer.actions;
+
+export const onProductCreate = createAsyncThunk(
+	"createProduct",
+	async (data: INewProduct) => {
+		try{
+			const res: any = await api.products.create(data);
+			return res;
+		} catch(err) {
+			return err;
+		}
+	}
+);
+
+export const onProductUpdate = createAsyncThunk(
+	"updateProduct",
+	async (data: { product: Partial<IProduct>; id: number; }) => {
+		try{
+			const res: any = await api.products.update(data);
+			return res;
+		} catch(err) {
+			return err;
+		}
+	}
+);
+
+export const {
+	cancelDeletedCategoryState, 
+	cancelCreatedCategoryState, 
+	cancelUpdatedCategoryState,
+	cancelCreatedProductState,
+	cancelDeletedProductState, 
+	cancelUpdatedProductState,
+
+} = adminReducer.actions;

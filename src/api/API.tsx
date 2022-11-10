@@ -1,5 +1,5 @@
-import { IHttpClient, IHeaders, IProductError, TCategories, IUser, LoginErr, ICategory } from "../types/IAPI";
-import { INewCategory, IProduct } from "../types/interfaces";
+import { IHttpClient, IHeaders, IProductError, TCategories, IUser, LoginErr } from "../types/IAPI";
+import { INewCategory, IProduct, INewProduct } from "../types/interfaces";
 
 class HttpClient implements IHttpClient {
 	_baseUrl;
@@ -85,8 +85,8 @@ class ApiClient extends HttpClient {
 			getAll: (offset?: string, limit?: string) => this.get<IProduct[] | undefined>(!offset ? "/api/v1/products" : `/api/v1/products?offset=${offset}&limit=${limit}`),
 			get: (id: number) => this.get<IProduct | IProductError>(`/api/v1/products/${id}`),
 			delete: (id: number) => this.delete(`/api/v1/products/${id}`),
-			create: (product: IProduct) => this.post("/api/v1/products/", product),
-			update: (product: IProduct, id: number) => this.put(`/api/v1/products/${id}`, product),
+			create: (product: INewProduct) => this.post("/api/v1/products/", product),
+			update: (data: {product: Partial<IProduct>, id: number}) => this.put(`/api/v1/products/${data.id}`, data.product),
 		};
 	}
 	get categories() {

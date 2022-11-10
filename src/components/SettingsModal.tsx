@@ -1,42 +1,50 @@
 import React, { useState, useEffect } from "react";
-import {Modal, Stack, Typography, Alert, TextField, Button} from "@mui/material";
+import {Modal, Stack, Typography, Button} from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxTyped";
-import { onCategoryUpdate, onCategoryCreate } from "../redux/reducers/adminReducer";
-import { EditModal } from "../types/interfaces";
+import { onCategoryUpdate, onCategoryCreate, onProductUpdate, onProductCreate } from "../redux/reducers/adminReducer";
+import { EditModal, ICategory, INewCategory, IProduct, INewProduct } from "../types/interfaces";
+import { CategoriesForm } from "./Profile/CategoriesForm";
+import { ProductsForm } from "./Profile/ProductsForm";
+import { ICategoriesForm } from "../types/interfaces";
 
-export const SettingsModal = ({open, handleClose, mode, values}: EditModal) => {
-	const [name, setName] = useState<string>();
-	const [image, setImage]= useState<string>();
+export const SettingsModal = ({open, handleClose, mode, context, defaultCategoriesValues, defaultProductValues}: EditModal) => {
 	const dispatch = useAppDispatch();
 	const title = mode === "edit" ? "Edit" : "Create";
-	// useEffect(() => {
-	// 	if(values) {
-	// 		setName(values.name);
-	// 		setImage(values.image);
-	// 	}
-	// }, [values]);
+	const contextTitle = context === "products" ? "product" : "category";
+	const [categoriesValues, setCategoriesValues] = useState<INewCategory | undefined>();
+	const [productsValues, setProductsValues] = useState<Partial<IProduct> | INewProduct>({});
 
 	const onEdit = () => {
-		if(values) {
+		if(context === "categories" && categoriesValues && defaultCategoriesValues && "id" in defaultCategoriesValues) {
 			dispatch(onCategoryUpdate({
-				id: values.id,
-				body: {
-					id: values.id,
-					name,
-					image
-				}
+				id: defaultCategoriesValues["id"],
+				body: categoriesValues
 			}));
 			handleClose(false);
+			return;
 		}
+
+		if(context === "products" && defaultProductValues && "id" in defaultProductValues) {
+			dispatch(onProductUpdate({
+				id: defaultProductValues["id"],
+				product: productsValues
+			}));
+			handleClose(false);
+			return;
+		}
+
 	};
 
 	const onCreate = () => {
-		if(name && image) {
-			dispatch(onCategoryCreate({
-				name,
-				image
-			}));
+		if(context === "categories" && categoriesValues) {
+			dispatch(onCategoryCreate(categoriesValues));
 			handleClose(false);
+			return;
+		}
+		if(context === "products" && productsValues && "categoryId" in productsValues) {
+			dispatch(onProductCreate(productsValues));
+			handleClose(false);
+			return;
 		}
 	};
 
@@ -61,24 +69,15 @@ export const SettingsModal = ({open, handleClose, mode, values}: EditModal) => {
 				sx={{backgroundColor: "#fff", width: "50%", padding: "3em"}}
 				justifyContent="center">
 				<Typography id="modal-modal-title" variant="h6" component="h2">
-					{title} Category
+					{title} {contextTitle}
 				</Typography>
-				<TextField 
-					sx={{width: "60%"}}
-					type="text"
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					id="outlined-basic" 
-					label="name" 
-					variant="outlined" />
-				<TextField 
-					sx={{width: "60%"}}
-					type="url"
-					value={image}
-					onChange={(e) => setImage(e.target.value)}
-					id="outlined-basic" 
-					label="image" 
-					variant="outlined" />
+				{context === "categories" && <CategoriesForm<ICategoriesForm<INewCategory | undefined>>
+					values={defaultCategoriesValues} onChange={setCategoriesValues}
+				/>}
+				{context === "products" && <ProductsForm 
+					values={defaultProductValues} 
+					onChange={setProductsValues}
+				/>}
 				<Button 
 					onClick={() => {
 						if(mode === "edit") {

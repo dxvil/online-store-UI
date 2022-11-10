@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ProfileMenu } from "./ProfileMenu";
 import { Settings } from "./Settings";
 import { SettingsModal } from "../SettingsModal";
-import { ICategory, IProduct } from "../../types/interfaces";
+import { ICategory, IProduct, AdminContext } from "../../types/interfaces";
 import { useAppSelector } from "../../hooks/reduxTyped";
 
 export const Admin = () => {
@@ -10,47 +10,54 @@ export const Admin = () => {
 	const [onCategoriesModalCreate, setOnCategoriesModalCreate] = useState<boolean>(false);
 	const [onProductsModalEdit, setOnProductsModalEdit] = useState<boolean>(false);
 	const [onProductsModalCreate, setOnProductsModalCreate] = useState<boolean>(false);
-	const [categoryToEdit, setCategoryToEdit] = useState<ICategory | null>(null);
-	const [productToEdit, setProductToEdit] = useState<IProduct | null>(null);
+	const [categoryToEdit, setCategoryToEdit] = useState<ICategory | undefined>(undefined);
+	const [productToEdit, setProductToEdit] = useState<IProduct | undefined>(undefined);
 	const categories = useAppSelector((state) => state.products.categories);
 	const products = useAppSelector((state) => state.products.allProducts);
+	const [context, setContext] = useState<AdminContext>("categories");
+
 	return (
 		<>
-			<ProfileMenu />
+			<ProfileMenu setContext={setContext} />
 			<div style={{width: "70%"}}>
-				{/* <Settings 
+				{context === "categories" && <Settings<ICategory>
 					context="categories"
+					list={categories}
 					modalEdit={onCategoriesModalEdit}
 					onModalEdit={setOnCategoriesModalEdit}
 					onModalCreate={setOnCategoriesModalCreate}
 					setItemToEdit={setCategoryToEdit}
-				/> */}
-				<Settings<IProduct>
+				/>}
+				{context === "products" && <Settings<IProduct>
 					context="products"
 					list={products}
 					modalEdit={onProductsModalEdit}
 					onModalEdit={setOnProductsModalEdit}
 					setItemToEdit={setProductToEdit}
 					onModalCreate={setOnProductsModalCreate}
-				/>
-				{onProductsModalEdit && <SettingsModal 
-					values={productToEdit}
+				/>}
+				{onProductsModalEdit && <SettingsModal
+					context="products"
+					defaultProductValues={productToEdit}
 					open={onProductsModalEdit}
 					handleClose={setOnProductsModalEdit}
 					mode="edit"
 				/>}
 				{onProductsModalCreate && <SettingsModal 
+					context="products"
 					open={onProductsModalCreate}
 					handleClose={setOnProductsModalCreate}
 					mode="create"
 				/>}
 				{onCategoriesModalEdit && <SettingsModal 
-					values={categoryToEdit}
+					context="categories"
+					defaultCategoriesValues={categoryToEdit}
 					open={onCategoriesModalEdit}
 					handleClose={setOnCategoriesModalEdit}
 					mode="edit"
 				/>}
 				{onCategoriesModalCreate && <SettingsModal 
+					context="categories"
 					open={onCategoriesModalCreate}
 					handleClose={setOnCategoriesModalCreate}
 					mode="create"

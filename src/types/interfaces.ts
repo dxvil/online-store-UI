@@ -41,8 +41,9 @@ export type EditModal = {
     open: boolean,
     handleClose: (value: boolean) => void,
     mode: "create" | "edit"
-    values?: ICategory | IProduct | null
-
+	defaultCategoriesValues?: ICategory | undefined
+	defaultProductValues?: IProduct | undefined
+	context: "categories" | "products"
 }
 
 export type TSettings<T> ={
@@ -53,3 +54,28 @@ export type TSettings<T> ={
 	setItemToEdit: (item: T) => void
 	onModalCreate: (value: boolean) => void
 };
+
+export interface ICategoriesForm<T> {
+	values: T | null | undefined
+	onChange: (data: Partial<ICategory>) => void
+}
+
+export interface INewProduct {
+	id: number
+	title: string
+	price: number
+	description: string
+	categodyId: number
+	images: string[]
+}
+
+export interface IProductForm {
+    values: IProduct | undefined
+    onChange: (data: Partial<IProduct> | INewProduct) => void
+}
+
+export type AdminContext = "products" | "categories";
+
+export interface IProfileMenu {
+	setContext: (context: AdminContext) => void
+}

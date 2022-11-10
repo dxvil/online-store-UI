@@ -5,8 +5,15 @@ import { Stack, Button } from "@mui/material";
 import { Item } from "./Item";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { ICategory, IProduct, TSettings } from "../../types/interfaces";
-import { cancelUpdatedCategoryState, cancelCreatedCategoryState, cancelDeletedCategoryState, onCategoryDelete } from "../../redux/reducers/adminReducer";
+import { TSettings } from "../../types/interfaces";
+import { 
+	cancelUpdatedCategoryState, 
+	cancelCreatedCategoryState, 
+	cancelDeletedCategoryState, 
+	cancelCreatedProductState,
+	cancelDeletedProductState, 
+	cancelUpdatedProductState,
+	onCategoryDelete } from "../../redux/reducers/adminReducer";
 import {uuid} from "../../tools/uuid";
 
 export function Settings<T>({
@@ -17,9 +24,15 @@ export function Settings<T>({
 	setItemToEdit
 }: TSettings<T>) {
 	const dispatch = useAppDispatch();
-	const isUpdated = useAppSelector((state) => state.admin.isUpdatedCategory);
-	const isDeleted = useAppSelector((state) => state.admin.isDeletedCategory);
-	const isCreated = useAppSelector((state) => state.admin.isCreatedCategory);
+	const isUpdated = context === "categories" ?
+		useAppSelector((state) => state.admin.isUpdatedCategory)
+		: useAppSelector((state) => state.admin.isUpdatedProduct);
+	const isDeleted = context === "categories" ?
+		useAppSelector((state) => state.admin.isDeletedCategory) :
+		useAppSelector((state) => state.admin.isDeletedProduct);
+	const isCreated = context === "categories" ?
+		useAppSelector((state) => state.admin.isCreatedCategory)
+		: useAppSelector((state) => state.admin.isCreatedProduct);
 
 	const onCategoriesContext = () => {
 		if(context === "categories") {
@@ -30,18 +43,25 @@ export function Settings<T>({
 		}
 	};
 
-	const onProdcutsContext = () => {
+	const onProductsContext = () => {
 		if(context === "products") {
 			dispatch(fetchAllProducts({maxElements: "5", offset: "0"}));
+			dispatch(cancelCreatedProductState());
+			dispatch(cancelDeletedProductState()); 
+			dispatch(cancelUpdatedProductState());
 		}
 	};
 
 	useEffect(() => {
-		onProdcutsContext();
+		onProductsContext();
 	}, []);
 
 	useEffect(() => {
-		onCategoriesContext();
+		if(context === "products") {
+			onProductsContext();
+		} else {
+			onCategoriesContext();
+		}
 	}, [isUpdated, isDeleted, isCreated]);
 
 	const onEdit = (item: T) => {
