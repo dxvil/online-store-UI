@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TextField, Select, MenuItem } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
 import { fetchListOfCategories } from "../../redux/reducers/productsReducer";
-import { IProductForm, IProduct } from "../../types/interfaces";
+import { IProductForm } from "../../types/interfaces";
 
 export const ProductsForm = ({values, onChange}: IProductForm) => {
 	const categories = useAppSelector((state) => state.products.categories);

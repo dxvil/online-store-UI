@@ -8,7 +8,7 @@ export const Profile = () => {
 	
 	return (
 		<Stack direction="row" 
-			sx={{width: "100%"}}
+			sx={{width: "100%", margin: "5em 0 0 0"}}
 			justifyContent="space-between"
 			spacing={20}>
 			<Admin />

@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { TextField } from "@mui/material";
-import { ICategoriesForm, INewCategory } from "../../types/interfaces";
+import { ICategoriesForm } from "../../types/interfaces";
 
-export function CategoriesForm<T extends ICategoriesForm<INewCategory | undefined>>({values, onChange}: T) {
+export function CategoriesForm ({values, onChange}: ICategoriesForm) {
 	const [name, setName] = useState<string>();
 	const [image, setImage]= useState<string>();
 
+	const setupValues = () => {
+		if(values && "name" in values) setName(values.name);
+		if(values && "image" in values) setImage(values.image);
+	};
+
 	useEffect(() => {
 		if(values) {
-			if("name" in values) setName(values.name);
-			if("image" in values) setImage(values.image);
+			setupValues();
 		}
 	}, [values]);
 
 	useEffect(() => {
-		onChange({
-			name,
-			image
-		});
+		if(name && image) {
+			onChange({
+				name,
+				image
+			});
+		}
 	}, [name, image]);
 
 	return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ProfileMenu } from "./ProfileMenu";
 import { Settings } from "./Settings";
 import { SettingsModal } from "../SettingsModal";

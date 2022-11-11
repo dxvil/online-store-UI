@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/API";
-import { INewCategory, ICategory, IProduct, INewProduct } from "../../types/interfaces";
+import { INewCategory, IProduct, INewProduct } from "../../types/interfaces";
 
 const initialState = {
 	isUpdatedCategory: false,

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {Modal, Stack, Typography, Button} from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxTyped";
+import { useAppDispatch } from "../hooks/reduxTyped";
 import { onCategoryUpdate, onCategoryCreate, onProductUpdate, onProductCreate } from "../redux/reducers/adminReducer";
-import { EditModal, ICategory, INewCategory, IProduct, INewProduct } from "../types/interfaces";
+import { EditModal, INewCategory, IProduct, INewProduct } from "../types/interfaces";
 import { CategoriesForm } from "./Profile/CategoriesForm";
 import { ProductsForm } from "./Profile/ProductsForm";
-import { ICategoriesForm } from "../types/interfaces";
 
 export const SettingsModal = ({open, handleClose, mode, context, defaultCategoriesValues, defaultProductValues}: EditModal) => {
 	const dispatch = useAppDispatch();
@@ -71,7 +70,7 @@ export const SettingsModal = ({open, handleClose, mode, context, defaultCategori
 				<Typography id="modal-modal-title" variant="h6" component="h2">
 					{title} {contextTitle}
 				</Typography>
-				{context === "categories" && <CategoriesForm<ICategoriesForm<INewCategory | undefined>>
+				{context === "categories" && <CategoriesForm
 					values={defaultCategoriesValues} onChange={setCategoriesValues}
 				/>}
 				{context === "products" && <ProductsForm 

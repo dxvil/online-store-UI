@@ -55,11 +55,6 @@ export type TSettings<T> ={
 	onModalCreate: (value: boolean) => void
 };
 
-export interface ICategoriesForm<T> {
-	values: T | null | undefined
-	onChange: (data: Partial<ICategory>) => void
-}
-
 export interface INewProduct {
 	id: number
 	title: string
@@ -72,6 +67,11 @@ export interface INewProduct {
 export interface IProductForm {
     values: IProduct | undefined
     onChange: (data: Partial<IProduct> | INewProduct) => void
+}
+
+export interface ICategoriesForm {
+	values: ICategory | undefined
+	onChange: (data: INewCategory | undefined) => void
 }
 
 export type AdminContext = "products" | "categories";

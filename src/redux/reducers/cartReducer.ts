@@ -38,7 +38,7 @@ export const cartReducer = createSlice({
 		},
 		countPrice (state) {
 			const price = state.items.reduce((prev, next) => {
-				return prev + next.price;
+				return prev + (next.price * next.quintity);
 			}, 0);
 			return {...state, price: price};
 		}

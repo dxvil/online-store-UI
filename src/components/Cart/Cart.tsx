@@ -48,7 +48,7 @@ export const Cart = () => {
 				})}
 			</Stack>
 			<Typography variant="h4" gutterBottom>
-				Total: {quintity}
+				Total: {quintity} Euro
 			</Typography>
 			<Button variant="contained" style={{margin: "3em 0"}}>
 				Confirm purchase

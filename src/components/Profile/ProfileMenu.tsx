@@ -1,10 +1,10 @@
 import React from "react";
 import { MenuList, MenuItem } from "@mui/material";
-import { IProfileMenu } from "../../types/interfaces";
+import { AdminContext, IProfileMenu } from "../../types/interfaces";
 
 
-export const ProfileMenu = ({setContext}: ProfileMenu) => {
-	const onChange = (context: string) => {
+export const ProfileMenu = ({setContext}: IProfileMenu) => {
+	const onChange = (context: AdminContext) => {
 		setContext(context);
 	};
 	return (
