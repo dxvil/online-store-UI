@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { ProfileMenu } from "./ProfileMenu";
-import { Settings } from "./Settings";
-import { SettingsModal } from "../SettingsModal";
+import { ProfileMenu } from "../../components/Profile/ProfileMenunts/Profile/ProfileMenu";
+import { Settings } from "../../components/Profile/Settingsonents/Profile//Settings";
+import { SettingsModal } from "../../components/SettingsModal";
 import { ICategory, IProduct, AdminContext } from "../../types/interfaces";
 import { useAppSelector } from "../../hooks/reduxTyped";
 

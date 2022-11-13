@@ -1,6 +1,6 @@
 import React from "react";
 import { AppMenu } from "../../components/Menu/AppMenu";
-import { Products } from "../../components/Products";
+import { Products } from "../../containers/Products/Products";
 import { Footer } from "../../components/Footer";
 
 export const ProductPage = () => {

@@ -1,13 +1,17 @@
 import React from "react";
-import { Typography, Badge } from "@mui/material";
+import { Typography, Badge, Button, Tooltip } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../hooks/reduxTyped";
+import LogoutIcon from "@mui/icons-material/Logout";
 import styles from "../../assets/styles/Menu.module.css";
+import { useAuthentificaton } from "../../hooks/useAuthentification";
 
 export const AppMenu = () => {
 	const location = useLocation();
-	const {quintity} = useAppSelector((state) => state.cart);
+	const { quintity } = useAppSelector((state) => state.cart);
+	const { isLogin } = useAppSelector((state) => state.user);
+	const { logout } = useAuthentificaton();
 
 	return (
 		<ul 
@@ -39,12 +43,22 @@ export const AppMenu = () => {
 					<Badge 
 						color="primary" 
 						badgeContent={quintity}>
-						<ShoppingCartIcon />
+						<Tooltip title="Cart">
+							<ShoppingCartIcon />
+						</Tooltip>
 					</Badge>
 				</NavLink>
-				<div 
-					className="cart-list-counter"></div>
 			</li>
+			{isLogin && 
+			<li 
+				className={styles["app-menu-list-item"]}>
+				<Button onClick={() => logout()} className="cart-list-item">
+					<Tooltip title="Logout">
+						<LogoutIcon />
+					</Tooltip>
+				</Button>
+			</li>
+			}
 		</ul>
 		
 	);

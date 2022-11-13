@@ -24,6 +24,13 @@ export const userReducer = createSlice({
 				};
 			}
 			return state;
+		},
+		onLogout(state) {
+			state = {
+				isLogin: false, 
+				user: undefined
+			};
+			return state;
 		}
 	},
 });
@@ -39,4 +46,4 @@ export const authentificate = createAsyncThunk(
 	}
 );
 
-export const { onCurrentUser } = userReducer.actions;
+export const { onCurrentUser, onLogout } = userReducer.actions;

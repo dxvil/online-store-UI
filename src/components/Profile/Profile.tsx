@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Stack, Card, CardContent, Alert, Typography } from "@mui/material";
-import { Admin } from "./Admin";
+import { Admin } from "../../containers/Admin/Admin";
 import { useAppSelector } from "../../hooks/reduxTyped";
 
 export const Profile = () => {
-	const {user} = useAppSelector((state) => state.user);
+	const { user, isLogin } = useAppSelector((state) => state.user);
+	const navigate = useNavigate();
 	const customerStyles = user?.role === "customer" ? {
 		alignItems: "center",
 		justifyContent: "center"
 	} : {};
+
+	useEffect(() => {
+		if(isLogin === false) {
+			navigate("/login");
+		}
+	}, [isLogin]);
 
 	return (
 		<Stack direction="row" 

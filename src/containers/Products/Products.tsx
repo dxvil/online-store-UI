@@ -1,16 +1,16 @@
 import React, { useEffect, useState,useMemo } from "react";
-import { IProduct } from "../types/interfaces";
-import { ProductItem } from "./Product/ProductItem";
-import { uuid } from "../tools/uuid";
-import { pagination } from "../tools/pagination";
-import { AppPagination } from "./Pagination";
-import { Categories } from "./Categories";
+import { IProduct } from "../../types/interfaces";
+import { ProductItem } from "../../components/Product/ProductItem";
+import { uuid } from "../../tools/uuid";
+import { pagination } from "../../tools/pagination";
+import { AppPagination } from "../../components/Pagination";
+import { Categories } from "../../components/Categories";
 import { Stack } from "@mui/material";
 import styles from "../assets/styles/Products.module.css";
-import { Search } from "./Search";
-import { fetchAllProducts, fetchAllByCategory, findItem, CATEGORY_MODE } from "../redux/reducers/productsReducer";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxTyped";
-import { CategoryMode } from "../types/redux";
+import { Search } from "../../components/Search";
+import { fetchAllProducts, fetchAllByCategory, findItem, CATEGORY_MODE } from "../../redux/reducers/productsReducer";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
+import { CategoryMode } from "../../types/redux";
 
 export const Products = ({maxElements, withPagination, purpose}: {maxElements: number, withPagination: boolean, purpose?: string}) => {
 	const dispatch = useAppDispatch();
