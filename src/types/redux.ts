@@ -30,8 +30,7 @@ interface CartItem extends IProduct {
 
 export interface CartState {
     items: CartItem[],
-    quintity: number,
-	price: number
+    quintity: number
 }
 
 export type UserReducer = {

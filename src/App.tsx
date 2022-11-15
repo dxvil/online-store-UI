@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
 	createBrowserRouter,
 	RouterProvider
@@ -11,7 +11,7 @@ import { ProductPage } from "./pages/ProductPage/ProductPage";
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 import { CartPage } from "./pages/CartPage/CartPage";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
-import { countQuintity, countPrice } from "./redux/reducers/cartReducer";
+import { countQuintity } from "./redux/reducers/cartReducer";
 import { useAppDispatch, useAppSelector } from "./hooks/reduxTyped";
 import { onGetCookie, cookieName, onDeleteCookie } from "./tools/cookie";
 import { useAuthentificaton } from "./hooks/useAuthentification";
@@ -66,9 +66,8 @@ const App = () => {
 		}
 	}, []);
 
-	useEffect(() => {
+	useCallback(() => {
 		dispatch(countQuintity());
-		dispatch(countPrice());
 	}, [items]);
 
 	return (
