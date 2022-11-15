@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { api } from "../../api/API";
+import { api } from "../../api/api";
 import { IProductsState, FetchStatus, FindItem, TCATEGORY_MODE } from "../../types/redux";
 import { IProduct } from "../../types/interfaces";
 import { IProductError } from "../../types/IAPI";

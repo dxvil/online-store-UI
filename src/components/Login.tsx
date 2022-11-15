@@ -3,9 +3,10 @@ import { Box, TextField, Typography, Button } from "@mui/material";
 import { ApiError } from "./ApiError";
 import { useAuthentificaton } from "../hooks/useAuthentification";
 import { useAppSelector } from "../hooks/reduxTyped";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Login = () => {
+	const { newUser } = useAppSelector((state) => state.user);
 	const [login, setLogin] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const { loginError, auth } = useAuthentificaton();
@@ -17,6 +18,9 @@ export const Login = () => {
 		auth(login, password);
 	};
 
+	useEffect(() => {
+		if(newUser && "email" in newUser) setLogin(newUser["email"] ?? "");
+	}, [newUser]);
 
 	useEffect(() => {
 		if(isLogin) {
@@ -59,7 +63,20 @@ export const Login = () => {
 				type="submit">
                 Login
 			</Button>
-
+			<Link to="/registration">
+				<Typography 
+					sx={{
+						margin: "1.5em 0",
+						textAlign: "left"
+					}}
+					variant="caption" 
+					display="block" 
+					gutterBottom>
+				Do not have an account?
+				Create account
+				</Typography>
+			</Link>
+			
 			{loginError && <ApiError 
 				message={loginError.message} 
 				statusCode={loginError.statusCode}

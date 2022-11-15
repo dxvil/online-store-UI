@@ -1,4 +1,4 @@
-import { IHttpClient, IHeaders, IProductError, TCategories, IUser, LoginErr } from "../types/IAPI";
+import { IHttpClient, IHeaders, IProductError, TCategories, IUser, LoginErr, IEmail, INewUser } from "../types/IAPI";
 import { INewCategory, IProduct, INewProduct } from "../types/interfaces";
 
 class HttpClient implements IHttpClient {
@@ -107,7 +107,9 @@ class ApiClient extends HttpClient {
 					"Authorization": `Bearer ${token}`
 				};
 				return this.get<IUser | LoginErr>("/api/v1/auth/profile");
-			}
+			},
+			checkEmailAvailability: (data: IEmail) => this.post("/api/v1/users/is-available", data),
+			registration: (data: INewUser) => this.post("/api/v1/users/", data)
 		};
 	}
 }

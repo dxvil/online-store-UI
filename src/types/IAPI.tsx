@@ -36,3 +36,14 @@ export type LoginErr = {
 	message: string,
 	statusCode: number
 }
+
+export interface IEmail {
+    email: string
+}
+
+export interface INewUser {
+    name: string
+    email: string
+    password: string
+    avatar: string
+}

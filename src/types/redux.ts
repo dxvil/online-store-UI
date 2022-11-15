@@ -1,5 +1,5 @@
 import { ICategory, IProduct } from "./interfaces";
-import { IProductError, IUser } from "./IAPI";
+import { INewUser, IProductError, IUser } from "./IAPI";
 
 export type FetchStatus = "notStarted" | "pending" | "done";
 
@@ -37,6 +37,8 @@ export interface CartState {
 export type UserReducer = {
     isLogin: boolean,
 	user: undefined | IUser
+    newUser: undefined | Partial<INewUser>
+    isCreatingNewUser: boolean
 }
 export type CategoryMode = "all" | "filtered";
 

@@ -7,7 +7,7 @@ import { useAppSelector } from "../../hooks/reduxTyped";
 export const Profile = () => {
 	const { user, isLogin } = useAppSelector((state) => state.user);
 	const navigate = useNavigate();
-	const customerStyles = user?.role === "customer" ? {
+	const customerStyles = user && user?.role === "customer" ? {
 		alignItems: "center",
 		justifyContent: "center"
 	} : {};
@@ -24,8 +24,8 @@ export const Profile = () => {
 			spacing={20}
 			justifyContent="space-between"
 			style={{...customerStyles}}>
-			{user?.role === "admin" && <Admin />}
-			{user?.role === "customer" &&
+			{user && user?.role === "admin" && <Admin />}
+			{user && user?.role === "customer" &&
 			<Alert severity="info" sx={{height: "3em"}}>
 				Dear customer, here it will be your list of purchases later on.
 			</Alert>

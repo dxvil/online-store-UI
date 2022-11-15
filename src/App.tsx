@@ -15,6 +15,8 @@ import { countQuintity, countPrice } from "./redux/reducers/cartReducer";
 import { useAppDispatch, useAppSelector } from "./hooks/reduxTyped";
 import { onGetCookie, cookieName, onDeleteCookie } from "./tools/cookie";
 import { useAuthentificaton } from "./hooks/useAuthentification";
+import { RegistrationPage } from "./pages/RegistrationPage/RegistationPage";
+
 
 const router = createBrowserRouter([
 	{
@@ -42,6 +44,10 @@ const router = createBrowserRouter([
 	{
 		path: "/login",
 		element: <LoginPage />
+	},
+	{
+		path: "/registration",
+		element: <RegistrationPage />
 	}
 ]);
 

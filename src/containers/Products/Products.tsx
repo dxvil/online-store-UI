@@ -6,7 +6,7 @@ import { pagination } from "../../tools/pagination";
 import { AppPagination } from "../../components/Pagination";
 import { Categories } from "../../components/Categories";
 import { Stack } from "@mui/material";
-import styles from "../assets/styles/Products.module.css";
+import styles from "../../assets/styles/Products.module.css";
 import { Search } from "../../components/Search";
 import { fetchAllProducts, fetchAllByCategory, findItem, CATEGORY_MODE } from "../../redux/reducers/productsReducer";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";

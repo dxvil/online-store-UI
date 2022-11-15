@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { api } from "../api/API";
+import { api } from "../api/api";
 import { useAppDispatch } from "./reduxTyped";
-import { onCurrentUser, onLogout } from "../redux/reducers/userReducer";
-import { LoginErr } from "../types/IAPI";
+import { onCurrentUser, onLogout, registrationNewUser } from "../redux/reducers/userReducer";
+import { IEmail, INewUser, LoginErr } from "../types/IAPI";
 import { onSetCookie } from "../tools/cookie";
 import { cookieName, onDeleteCookie } from "../tools/cookie";
-import { useNavigate } from "react-router-dom";
 
 export const useAuthentificaton = () => {
 	const [loginError, setLoginError] = useState<null | LoginErr>(null);
 	const [userError, setUserError] = useState<null | LoginErr>(null);
+	const [isAvailableEmailError, setIsAvailableEmailError] = useState<boolean>(true);
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
 
 	const getUser = async (token: string) => {
 		try{
@@ -36,9 +35,34 @@ export const useAuthentificaton = () => {
 
 	const logout = () => {
 		onDeleteCookie(cookieName);
-		onLogout();
-		navigate("/login");
+		dispatch(onLogout());
+	};
+
+	const checkEmail = async (email: IEmail) => {
+		try	{
+			return await api.authentication.checkEmailAvailability(email);
+		} catch(err) {
+			return err;
+		}
+	};
+	const registration = (email: IEmail, data: INewUser) => {
+		return Promise.all([
+			checkEmail(email),
+			dispatch(registrationNewUser(data))
+		]).then((res: any) => {
+			if(res[0] && "isAvailable" in res[0]) {
+				setIsAvailableEmailError(res[0]?.isAvailable);
+			}
+		});
 	};
 		
-	return { loginError, userError, auth, getUser, logout };
+	return { 
+		loginError, 
+		userError, 
+		auth, 
+		registration, 
+		isAvailableEmailError,
+		setIsAvailableEmailError,
+		getUser, 
+		logout };
 };
