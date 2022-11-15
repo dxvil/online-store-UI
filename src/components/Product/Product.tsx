@@ -7,32 +7,31 @@ import { NoItem } from "../NoItem";
 import { BackButton } from "../BackButton";
 import {ProductCounter} from "./ProductCounter";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
-import { fetchProduct, FETCH_STATES } from "../../redux/reducers/productsReducer";
+import { FETCH_STATES } from "../../redux/reducers/productsReducer";
 import { Loader } from "../Loader";
 
 export const Product = () => {
-	const product = useAppSelector((state) => state.products.product);
 	const loadingState = useAppSelector((state) => state.products.fetchStatus.singleProduct);
 	const dispatch = useAppDispatch();
 	const [isLiked, setIsLiked] = useState<boolean>(false);
 	const { id } = useParams();
 
-	useEffect(() => {
-		if(id) {
-			dispatch(fetchProduct(Number(id)));
-		}
-	}, [id]);
+	// useEffect(() => {
+	// 	if(id) {
+	// 		dispatch(fetchProduct(Number(id)));
+	// 	}
+	// }, [id]);
 	
-	if(product !== null && ("error" in product)) {
-		return(
-			<NoItem 
-				link="/products"
-				error={product.error}
-				message={product.message}
-				statusCode={product.statusCode}
-			/>
-		);
-	}
+	// if(product !== null && ("error" in product)) {
+	// 	return(
+	// 		<NoItem 
+	// 			link="/products"
+	// 			error={product.error}
+	// 			message={product.message}
+	// 			statusCode={product.statusCode}
+	// 		/>
+	// 	);
+	// }
 	if(loadingState === FETCH_STATES.PENDING) {
 		return(
 			<Loader />
@@ -44,9 +43,9 @@ export const Product = () => {
 				direction="row" 
 				spacing={10} 
 				flexWrap="wrap">
-				{product && "images" in product && product?.images.length !== 0 &&
+				{/* {product && "images" in product && product?.images.length !== 0 &&
 						<ProductGallery product={product}/>
-				}
+				} */}
 				<Stack 
 					direction="column" 
 					className={styles["product-header"]}>
@@ -60,24 +59,24 @@ export const Product = () => {
 						<Typography 
 							variant="h4" 
 							gutterBottom>
-							{product && product?.title}
+							{/* {product && product?.title} */}
 						</Typography>
 						<Typography 
 							variant="h6" 
 							gutterBottom>
-							{product && product?.price} Euro
+							{/* {product && product?.price} Euro */}
 						</Typography>
 					</Stack>
 					<Typography 
 						variant="body1" 
 						gutterBottom>
-						{product && product?.description}
+						{/* {product && product?.description} */}
 					</Typography>
-					<ProductCounter 
+					{/* <ProductCounter 
 						isLiked={isLiked} 
 						setIsLiked={setIsLiked}
 						product={product}
-					/>
+					/> */}
 				</Stack>
 			</Stack>
 		</Box>

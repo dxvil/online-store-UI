@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
-import { fetchListOfCategories, fetchAllProducts } from "../../redux/reducers/productsReducer";
+import { fetchAllProducts } from "../../redux/reducers/productsReducer";
 import { Stack, Button } from "@mui/material";
 import { Item } from "./Item";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,6 +15,7 @@ import {
 	cancelUpdatedProductState,
 	onCategoryDelete } from "../../redux/reducers/adminReducer";
 import {uuid} from "../../tools/uuid";
+import { fetchListOfCategories } from "../../redux/reducers/categoriesReducer";
 
 export function Settings<T>({
 	list,

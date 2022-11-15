@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { TextField, Select, MenuItem } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
-import { fetchListOfCategories } from "../../redux/reducers/productsReducer";
 import { IProductForm } from "../../types/interfaces";
+import { fetchListOfCategories } from "../../redux/reducers/categoriesReducer";
 
 export const ProductsForm = ({values, onChange}: IProductForm) => {
-	const categories = useAppSelector((state) => state.products.categories);
+	const { categories } = useAppSelector((state) => state.categories);
 	const dispatch = useAppDispatch();
 	const [title, setTitle] = useState<string>("");
 	const [category, setCategory] = useState<number>(1);
@@ -14,7 +14,9 @@ export const ProductsForm = ({values, onChange}: IProductForm) => {
 	const [images, setImages] = useState<string[]>([]);
 
 	useEffect(() => {
-		dispatch(fetchListOfCategories());
+		if(categories.length === 0) {
+			dispatch(fetchListOfCategories());
+		}
 	}, []);
 
 	const setupValues = () => {

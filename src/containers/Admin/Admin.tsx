@@ -12,7 +12,7 @@ export const Admin = () => {
 	const [onProductsModalCreate, setOnProductsModalCreate] = useState<boolean>(false);
 	const [categoryToEdit, setCategoryToEdit] = useState<ICategory | undefined>(undefined);
 	const [productToEdit, setProductToEdit] = useState<IProduct | undefined>(undefined);
-	const categories = useAppSelector((state) => state.products.categories);
+	const { categories } = useAppSelector((state) => state.categories);
 	const products = useAppSelector((state) => state.products.allProducts);
 	const [context, setContext] = useState<AdminContext>("categories");
 

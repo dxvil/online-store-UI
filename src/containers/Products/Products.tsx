@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { IProduct } from "../../types/interfaces";
 import { ProductItem } from "../../components/Product/ProductItem";
 import { uuid } from "../../tools/uuid";
@@ -8,21 +8,21 @@ import { Categories } from "../../components/Categories";
 import { Stack } from "@mui/material";
 import styles from "../../assets/styles/Products.module.css";
 import { Search } from "../../components/Search";
-import { fetchAllProducts, fetchAllByCategory, findItem, CATEGORY_MODE } from "../../redux/reducers/productsReducer";
+import { fetchAllProducts, fetchAllByCategory, CATEGORY_MODE } from "../../redux/reducers/productsReducer";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
 import { CategoryMode } from "../../types/redux";
+import { fetchListOfCategories } from "../../redux/reducers/categoriesReducer";
+import { useFilters } from "../../hooks/useFilters";
+
 
 export const Products = ({maxElements, withPagination, purpose}: {maxElements: number, withPagination: boolean, purpose?: string}) => {
 	const dispatch = useAppDispatch();
+	const [input, setInput] = useState<string>("");
+	const [activeCategory, setActiveCategory] = useState<number>(0);
 	const [pageOfItems, setPageOfItems] = useState<number>(1);
-	const activeCategory = useAppSelector((state) => state.products.activeCategory);
-	const productsListLength = useAppSelector((state) => state.products.productsListLength);
-	const filteredListLength = useAppSelector((state) => state.products.filteredListLength);
-	const foundListLength = useAppSelector((state) => state.products.foundListLength);
-	const input = useAppSelector((state) => state.products.input);
 	const allProducts = useAppSelector((state) => state.products.allProducts);
 	const filteredProducts = useAppSelector((state) => state.products.filteredProducts);
-	const foundItemsList = useAppSelector((state) =>  state.products.foundItemsList);
+	const { foundItemsList } = useFilters(allProducts, input);
 	const filtered = useMemo(() => {
 		return pagination<IProduct>(maxElements, pageOfItems, filteredProducts);
 	}, [maxElements, pageOfItems, filteredProducts]);
@@ -30,32 +30,33 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 		return pagination<IProduct>(maxElements, pageOfItems, foundItemsList);
 	}, [maxElements, pageOfItems, foundItemsList]);
 
-	const onFindItem = () => {
-		const mode: CategoryMode = activeCategory ? CATEGORY_MODE.FILTERED : CATEGORY_MODE.ALL;
-		dispatch(findItem({input, mode}));
+	// const onFindItem = () => {
+	// 	const mode: CategoryMode = activeCategory ? CATEGORY_MODE.FILTERED : CATEGORY_MODE.ALL;
+	// 	dispatch(findItem({input, mode}));
+	// };
+
+	const loadProductPage = () => {
+		return Promise.all([dispatch(fetchAllProducts()), dispatch(fetchListOfCategories())]);
 	};
+	
 
 	const onAmountOfItems = () => {
 		if(input) {
-			return Math.floor(foundListLength / maxElements);
+			return Math.floor(foundItemsList.length / maxElements);
 		}
 		if(activeCategory) {
-			return Math.floor(filteredListLength / maxElements);
+			return Math.floor(filteredProducts.length / maxElements);
 		}
-		return Math.floor(productsListLength / maxElements);
+		return Math.floor(allProducts.length / maxElements);
 	};
 
-	const amountOfItems = onAmountOfItems();
-	
-	useEffect(() => {
-		dispatch(fetchAllProducts());
-	}, []);
+	const amountOfItems = useMemo(() => {
+		return onAmountOfItems() ?? 1;
+	}, [foundItemsList, filteredProducts, allProducts]);
 
 	useEffect(() => {
-		if(input) {
-			onFindItem();
-		}
-	}, [input, filteredListLength, activeCategory]);
+		loadProductPage();
+	}, []);
 
 	useEffect(() => {
 		if(activeCategory) {
@@ -63,7 +64,7 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 		}
 	}, [activeCategory]);
 
-	useEffect(() => {
+	useCallback(() => {
 		setPageOfItems(1);
 	}, [activeCategory, input]);
 
@@ -75,8 +76,8 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 				direction="row"
 				justifyContent="center"
 				alignItems="center">
-				<Categories />
-				<Search />
+				<Categories setActiveCategory={setActiveCategory} />
+				<Search setInput={setInput}/>
 			</Stack>
 			}
 			{!activeCategory && input === "" &&
@@ -94,7 +95,7 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 					);
 				})
 			}
-			{input && searched.length !== 0 && 
+			{input && searched && searched.length !== 0 && 
 			searched.map((item) => {
 				return(
 					<ProductItem item={item} key={uuid()} />

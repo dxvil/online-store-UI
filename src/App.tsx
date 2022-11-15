@@ -3,6 +3,7 @@ import {
 	createBrowserRouter,
 	RouterProvider
 } from "react-router-dom";
+
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
 import HomePage from "./pages/HomePage/HomePage";

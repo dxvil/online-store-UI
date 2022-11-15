@@ -12,7 +12,7 @@ export const cartReducer = createSlice({
 	reducers: {
 		addItem (state, action) {
 			const equalItem = state.items.find((item) => item.id === action.payload.id);
-			if(equalItem !== undefined) {
+			if(equalItem) {
 				equalItem.quintity += 1;
 				return state;
 			}
@@ -22,7 +22,7 @@ export const cartReducer = createSlice({
 		},
 		removeItem (state, action) {
 			const equalItem = state.items.find((item) => item.id === action.payload.id);
-			if(equalItem !== undefined && equalItem.quintity > 1) {
+			if(equalItem && equalItem.quintity > 1) {
 				equalItem.quintity--;
 				return state;
 			}

@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@mui/material";
 import { useDebounce } from "../hooks/useDebounce";
-import {onInputChange} from "../redux/reducers/productsReducer";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxTyped";
 
-export const Search = () => {
-	const dispatch = useAppDispatch();
+interface ISearch {
+	setInput: (value: string) => void
+}
+
+export const Search = ({setInput}: ISearch) => {
 	const [value, setValue] = useState<string>("");
 	const debouncedValue = useDebounce(value, 500);
-	const savedValue = useAppSelector((state) => state.products.input);
-	const onSearchChange = (value: string) => {
-		dispatch(onInputChange(value));
-	};
-
+	
 	useEffect(() => {
-		onSearchChange(debouncedValue);
+		setInput(debouncedValue);
 	}, [debouncedValue]);
-
-	useEffect(() => {
-		setValue(savedValue);
-	}, []);
 
 	return (
 		<Input 

@@ -1,33 +1,27 @@
 import React,{ useEffect, useState } from "react";
 import { FormGroup, FormControlLabel, Checkbox,  Box, Stack } from "@mui/material";
 import { ICategory } from "../types/interfaces";
-import { useAppSelector, useAppDispatch } from "../hooks/reduxTyped";
-import { fetchListOfCategories, onActiveCategoryChange } from "../redux/reducers/productsReducer";
+import { useAppSelector } from "../hooks/reduxTyped";
 import { useDebounce } from "../hooks/useDebounce";
 
-export const Categories = () => {
-	const dispatch = useAppDispatch();
+interface CategoriesComponent {
+	setActiveCategory: (category: number) => void
+}
+
+export const Categories = ({setActiveCategory}: CategoriesComponent) => {
 	const [category, setCategory] = useState<null | number>(null);
-	const categories = useAppSelector((state) => state.products.categories);
-	const activeCategory = useAppSelector((state) => state.products.activeCategory);
+	const { categories } = useAppSelector((state) => state.categories);
 	const debouncedCategory = useDebounce(category, 500);
 
-	const onChange = (id: number) => {
-		setCategory(activeCategory === id ? 0 : id);
-	};
-
 	useEffect(() => {
-		dispatch(fetchListOfCategories());
-	}, []);
-
-	useEffect(() => {
-		setCategory(activeCategory);
-	}, []);
-
-	useEffect(() => {
-		dispatch(onActiveCategoryChange(debouncedCategory));
+		if(debouncedCategory) {
+			setActiveCategory(debouncedCategory);
+		} else {
+			setActiveCategory(0);
+		}
+		
 	}, [debouncedCategory]);
-	
+
 	return (
 		<Box 
 			sx={{ 
@@ -43,17 +37,23 @@ export const Categories = () => {
 					alignItems="center"
 					justifyContent="center"
 				>
-					{categories && categories.map((category: ICategory) => {
+					{categories && categories.map((categoryItem: ICategory) => {
 						return(
 							<FormControlLabel 
-								onChange={() => onChange(category.id)}
-								checked={category.id === activeCategory}
-								defaultChecked={category.id === activeCategory}
+								onChange={() => {
+									if(category !== categoryItem.id) {
+										setCategory(categoryItem.id);
+										return;
+									}
+									setCategory(null);
+								}}
+								checked={categoryItem.id === category}
+								defaultChecked={categoryItem.id === category}
 								labelPlacement="start"
-								key={category.id}
-								value={category.id}
+								key={categoryItem.id}
+								value={categoryItem.id}
 								control={<Checkbox  />} 
-								label={category.name} />
+								label={categoryItem.name} />
 						);
 					})}</Stack>
 			</FormGroup>

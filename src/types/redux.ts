@@ -1,5 +1,5 @@
 import { ICategory, IProduct } from "./interfaces";
-import { INewUser, IProductError, IUser } from "./IAPI";
+import { INewUser, IUser, TCategories } from "./IAPI";
 
 export type FetchStatus = "notStarted" | "pending" | "done";
 
@@ -13,15 +13,6 @@ export interface IProductsState {
     fetchStatus: ComponentsWithFetch
     allProducts: IProduct[]
     filteredProducts: IProduct[]
-    searchItem: null | IProduct
-    categories: ICategory[]
-	productsListLength: number
-    filteredListLength: number
-    foundListLength: number
-    foundItemsList: IProduct[]
-    activeCategory: number | null
-    input: string
-    product: IProduct | IProductError | null
 }
 
 interface CartItem extends IProduct {
@@ -49,4 +40,8 @@ export type FindItem = {
 export type TCATEGORY_MODE = {
 	FILTERED: CategoryMode,
 	ALL: CategoryMode
+}
+
+export type CategoriesReducer = {
+    categories: TCategories
 }
