@@ -4,7 +4,6 @@ import { INewUser, IUser, TCategories } from "./IAPI";
 export type FetchStatus = "notStarted" | "pending" | "done";
 
 type ComponentsWithFetch = {
-    singleProductStage: FetchStatus,
     productsStage: FetchStatus,
     productsByCategoriesStage: FetchStatus
 }

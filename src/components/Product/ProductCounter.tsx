@@ -1,7 +1,5 @@
 import React from "react";
 import { addItem, removeItem } from "../../redux/reducers/cartReducer";
-import { IProduct } from "../../types/interfaces";
-import { IProductError } from "../../types/IAPI";
 import { Button, ButtonGroup, Badge, Stack } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -17,14 +15,14 @@ export const ProductCounter = ({product, isLiked, setIsLiked}: IProductCounter) 
 	const dispatch = useAppDispatch();
 	const {items} = useAppSelector((state) => state.cart);
 	const currentProduct = items.find((item) => {
-		if(product !== null && "id" in product) {
-			return item.id === product.id;
+		if(product && "id" in product) {
+			return item.id === product["id"];
 		}
 		return null;
 	});
 
 	const add = (): void => {
-		if(product !== null && !("error" in product)){
+		if(product  && !("error" in product)) {
 			dispatch(addItem(product));
 		}
 	};

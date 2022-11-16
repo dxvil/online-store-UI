@@ -32,7 +32,7 @@ export interface INoItem extends IProductError {
 }
 
 export interface IProductCounter {
-    product: IProduct | IProductError | null
+    product: undefined | IProduct | IProductError 
     isLiked?: boolean
     setIsLiked?: (x: boolean) => void
 }

@@ -10,7 +10,6 @@ export const FETCH_STATES: {[key: string]: FetchStatus} = {
 
 const initialState: IProductsState = {
 	fetchStatus: {
-		singleProductStage: FETCH_STATES.NOT_STARTED,
 		productsStage: FETCH_STATES.NOT_STARTED,
 		productsByCategoriesStage: FETCH_STATES.NOT_STARTED
 	},
