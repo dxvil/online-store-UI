@@ -5,14 +5,14 @@ import { uuid } from "../../tools/uuid";
 import { pagination } from "../../tools/pagination";
 import { AppPagination } from "../../components/Pagination";
 import { Categories } from "../../components/Categories";
-import { Stack } from "@mui/material";
+import { Alert, Stack } from "@mui/material";
 import styles from "../../assets/styles/Products.module.css";
 import { Search } from "../../components/Search";
-import { fetchAllProducts, fetchAllByCategory, CATEGORY_MODE } from "../../redux/reducers/productsReducer";
+import { fetchAllProducts, fetchAllByCategory, FETCH_STATES } from "../../redux/reducers/productsReducer";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxTyped";
-import { CategoryMode } from "../../types/redux";
 import { fetchListOfCategories } from "../../redux/reducers/categoriesReducer";
 import { useFilters } from "../../hooks/useFilters";
+import { Loader } from "../../components/Loader";
 
 
 export const Products = ({maxElements, withPagination, purpose}: {maxElements: number, withPagination: boolean, purpose?: string}) => {
@@ -22,7 +22,8 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 	const [pageOfItems, setPageOfItems] = useState<number>(1);
 	const allProducts = useAppSelector((state) => state.products.allProducts);
 	const filteredProducts = useAppSelector((state) => state.products.filteredProducts);
-	const { foundItemsList } = useFilters(allProducts, input);
+	const { productsStage, productsByCategoriesStage } = useAppSelector((state) => state.products.fetchStatus);
+	const { foundItemsList } = useFilters(allProducts, input, activeCategory);
 	const filtered = useMemo(() => {
 		return pagination<IProduct>(maxElements, pageOfItems, filteredProducts);
 	}, [maxElements, pageOfItems, filteredProducts]);
@@ -30,16 +31,10 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 		return pagination<IProduct>(maxElements, pageOfItems, foundItemsList);
 	}, [maxElements, pageOfItems, foundItemsList]);
 
-	// const onFindItem = () => {
-	// 	const mode: CategoryMode = activeCategory ? CATEGORY_MODE.FILTERED : CATEGORY_MODE.ALL;
-	// 	dispatch(findItem({input, mode}));
-	// };
-
 	const loadProductPage = () => {
 		return Promise.all([dispatch(fetchAllProducts()), dispatch(fetchListOfCategories())]);
 	};
 	
-
 	const onAmountOfItems = () => {
 		if(input) {
 			return Math.floor(foundItemsList.length / maxElements);
@@ -50,13 +45,17 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 		return Math.floor(allProducts.length / maxElements);
 	};
 
-	const amountOfItems = useMemo(() => {
+	const amountOfItems = () => {
 		return onAmountOfItems() ?? 1;
-	}, [foundItemsList, filteredProducts, allProducts]);
+	};
 
 	useEffect(() => {
 		loadProductPage();
 	}, []);
+
+	useEffect(() => {
+		onAmountOfItems();
+	}, [foundItemsList, filteredProducts, allProducts]);
 
 	useEffect(() => {
 		if(activeCategory) {
@@ -64,10 +63,18 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 		}
 	}, [activeCategory]);
 
-	useCallback(() => {
+	useEffect(() => {
 		setPageOfItems(1);
 	}, [activeCategory, input]);
 
+	if(productsStage === FETCH_STATES.PENDING) {
+		return (<Loader />);
+	}
+		
+	if(productsByCategoriesStage === FETCH_STATES.PENDING) {
+		return (<Loader />);
+	}
+	
 	return (
 		<div className={styles.products}>
 			{!purpose && 
@@ -88,21 +95,27 @@ export const Products = ({maxElements, withPagination, purpose}: {maxElements: n
 						);
 					})
 			}
-			{activeCategory && input === "" && filtered.length !== 0 &&
+			{activeCategory && input === "" && filtered.length !== 0 ?
 				filtered.map((item) => {
 					return(
 						<ProductItem item={item} key={uuid()} />
 					);
 				})
+				: ""
 			}
 			{input && searched && searched.length !== 0 && 
-			searched.map((item) => {
-				return(
-					<ProductItem item={item} key={uuid()} />
-				);
-			})
+				searched.map((item) => {
+					return(
+						<ProductItem item={item} key={uuid()} />
+					);
+				})
 			}
-			{withPagination && amountOfItems > 0 &&
+			{input && searched.length === 0 && 
+			<Alert color="info">
+				Product not found by {input} request
+			</Alert>
+			}
+			{withPagination &&
 					<AppPagination 
 						amountOfItems={amountOfItems} 
 						pageOfItems={pageOfItems}

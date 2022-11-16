@@ -21,7 +21,7 @@ export interface IProduct {
 }
 
 export interface IPagination {
-	amountOfItems: number | null
+	amountOfItems: () => number
 	pageOfItems: number
 	pageSize: number
 	setPageOfItems?: (page: number) => void

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api";
-import { IProductsState, FetchStatus, TCATEGORY_MODE } from "../../types/redux";
+import { IProductsState, FetchStatus } from "../../types/redux";
 
 export const FETCH_STATES: {[key: string]: FetchStatus} = {
 	NOT_STARTED: "notStarted",
@@ -10,17 +10,12 @@ export const FETCH_STATES: {[key: string]: FetchStatus} = {
 
 const initialState: IProductsState = {
 	fetchStatus: {
-		singleProduct: FETCH_STATES.NOT_STARTED,
-		products: FETCH_STATES.NOT_STARTED,
-		productsByCategories: FETCH_STATES.NOT_STARTED
+		singleProductStage: FETCH_STATES.NOT_STARTED,
+		productsStage: FETCH_STATES.NOT_STARTED,
+		productsByCategoriesStage: FETCH_STATES.NOT_STARTED
 	},
 	allProducts: [],
 	filteredProducts: [],
-};
-
-export const CATEGORY_MODE: TCATEGORY_MODE = {
-	FILTERED: "filtered",
-	ALL: "all"
 };
 
 export const productsReducer = createSlice({

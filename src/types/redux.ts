@@ -4,9 +4,9 @@ import { INewUser, IUser, TCategories } from "./IAPI";
 export type FetchStatus = "notStarted" | "pending" | "done";
 
 type ComponentsWithFetch = {
-    singleProduct: FetchStatus,
-    products: FetchStatus,
-    productsByCategories: FetchStatus
+    singleProductStage: FetchStatus,
+    productsStage: FetchStatus,
+    productsByCategoriesStage: FetchStatus
 }
 
 export interface IProductsState {
@@ -29,17 +29,6 @@ export type UserReducer = {
 	user: undefined | IUser
     newUser: undefined | Partial<INewUser>
     isCreatingNewUser: boolean
-}
-export type CategoryMode = "all" | "filtered";
-
-export type FindItem = {
-    input: string,
-    mode: CategoryMode
-}
-
-export type TCATEGORY_MODE = {
-	FILTERED: CategoryMode,
-	ALL: CategoryMode
 }
 
 export type CategoriesReducer = {

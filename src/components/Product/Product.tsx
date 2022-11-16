@@ -11,7 +11,7 @@ import { FETCH_STATES } from "../../redux/reducers/productsReducer";
 import { Loader } from "../Loader";
 
 export const Product = () => {
-	const loadingState = useAppSelector((state) => state.products.fetchStatus.singleProduct);
+	const { singleProductStage } = useAppSelector((state) => state.products.fetchStatus);
 	const dispatch = useAppDispatch();
 	const [isLiked, setIsLiked] = useState<boolean>(false);
 	const { id } = useParams();
@@ -32,7 +32,7 @@ export const Product = () => {
 	// 		/>
 	// 	);
 	// }
-	if(loadingState === FETCH_STATES.PENDING) {
+	if(singleProductStage === FETCH_STATES.PENDING) {
 		return(
 			<Loader />
 		);

@@ -19,7 +19,7 @@ export const AppPagination = ({amountOfItems, pageOfItems, setPageOfItems} : IPa
 			}}
 			variant="outlined" 
 			color="primary"
-			count={amountOfItems !== null ? amountOfItems : 1}
+			count={amountOfItems()}
 			onChange={(e: React.BaseSyntheticEvent, page: number) => onPage(page)}
 			page={pageOfItems}
 			defaultPage={pageOfItems}
